@@ -5,4 +5,4 @@ Andrea Dellera, Gianluca Bortoli.
 
 Progetto numb. 1
 
-Creare una comunicazione tra due progetti, client e server, che permettano di criptare o decriptare un messaggio
+Creare una comunicazione tra due processi, client e server, che permettano di criptare o decriptare un messaggio
