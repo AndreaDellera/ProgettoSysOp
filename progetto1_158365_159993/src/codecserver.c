@@ -19,7 +19,6 @@ int main(int argc, char **argv) {
   char *minvalue = NULL;
   char *maxvalue = NULL;
   char *maxtext = NULL;
-  int index;
   int k;
      
   char *options = "n:t:m:M:"; // i ":" indicano che il parametro ha un argomento

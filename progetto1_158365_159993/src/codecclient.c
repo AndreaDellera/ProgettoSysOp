@@ -17,16 +17,15 @@ int main(int argc, char **argv) {
   //##### Gestione input da linea di comando #############################
   char *client_name = NULL;
   char *key = NULL;
+  int file = 0;
   char *msg = NULL;
-  char *e = NULL;//-encode 
-  char *d = NULL;//-decode
-  char *o = NULL;
+  int encode = 0;
+  int decode = 0;
+  char *output = NULL;
 
-  int index;
   int k;
      
-  char *options = "n:k:m:M:"; // i ":" indicano che il parametro ha un argomento
-      
+  char *options = "n:k:fm:edo:";
   opterr = 0;
        
   while ((k = getopt (argc, argv, options)) != -1) {
@@ -36,11 +35,27 @@ int main(int argc, char **argv) {
       break;
 
     case 'k'://chiave
-      maxtext = optarg;
+      key = optarg;
+      break;
+
+    case 'f'://flag per prendere il messaggio da un file
+      file = 1;
       break;
                 
     case 'm'://file origine messaggio
       msg = optarg;
+      break;
+
+    case 'e'://flag encode
+      encode = 1;
+      break; 
+
+    case 'd'://flag decode
+      decode = 1;
+      break;
+
+    case 'o'://file output dove scrivere il messaggio una volta de/criptato
+      output = optarg;
       break;
             
     case '?'://caso in cui non riconosco nessuno dei caratteri
@@ -54,7 +69,5 @@ int main(int argc, char **argv) {
     }
   }
 
-  printf ("client_name = %s, key = %s, msg = %s\n", client_name, key, msg); 
-  
   return 0;
 }
