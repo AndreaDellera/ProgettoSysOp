@@ -12,12 +12,14 @@ bin:
 	#con un target “bin” (make bin) si devono generare i binari compilati eseguibili 
 	#dentro una cartella da crearsi automaticamente denominata “bin” che conterrà i 
 	#soli file oggetto eseguibili
+	mkdir bin
 
 assets:
 	#con un target “assets” (make assets) si devono poter generare dei possibili file di 
 	#input (di prova) dentro una cartella da crearsi automaticamente denominata 
 	#“assets” (cioè se il progetto può lavorare su dei file di input, questa direttiva ne 
 	#genera un set utilizzabile)  
+	mkdir assets
 
 test:
 	#con un target “test” (make test) si generano i binari e gli assets e si lancia 
@@ -27,3 +29,6 @@ clean:
 	#con un target “clean” si eliminano eventuali file temporanei, binari e assets 
 	#generati (questa regola deve essere sempre richiamata automaticamente dalle 
 	#altre)
+	rm -r bin/
+	rm -r assets/
+	rm -f *.o

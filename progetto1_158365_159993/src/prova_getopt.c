@@ -18,7 +18,7 @@ int main (int argc, char **argv) {
   int index;
   int k;
   
-  char *options ="n:m:M:"; // i : indicano che il parametro ha un argomento
+  char *options ="n:m:M:"; // i ":" indicano che il parametro ha un argomento
   
   opterr = 0;
     
