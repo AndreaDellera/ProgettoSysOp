@@ -12,6 +12,13 @@
 
 const int NUMB = 26;
 
+struct server{
+    int file;
+    int maxMsg;
+    int minKey;
+    int maxKey;
+};
+
 typedef int bool; //per usare bool
 #define true 1
 #define false 0
@@ -96,7 +103,14 @@ void decript(char* msg, char* key){
     }
 }
 
-int create_fifo(char* name){
-    int file = mkfifo(name, 0666); //0666 dà permessi in lettura e scrittura alla fifo a tutti gli utenti
-    return file;
+//crea una struttura server con all'interno la fifo e i dati che lo caratterizzano
+server create_fifo(char* name, int maxMsg, int minKey, int maxKey){
+    server s = new server();
+    s.file = mkfifo(name, 0666); //0666 dà permessi in lettura e scrittura alla fifo a tutti gli utenti
+    s.maxMsg = maxMsg;
+    s.minKey = minKey;
+    s.maxKey = maxKey;
+    return s;
 }
+
+

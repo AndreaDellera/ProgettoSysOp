@@ -8,6 +8,14 @@
 
 #ifndef _functions_h
 #define _functions_h
+
+struct server{
+    int file;
+    int maxMsg;
+    int minKey;
+    int maxKey;
+};
+
 /*
  - fifo_server è la fifo dove il client scrive ed il server legge
  - fifo_client è dove il server scrive ed il client legge

@@ -23,11 +23,14 @@ int main(int argc, char **argv) {
      
      Diciamo che gli argomenti vengono presi così
      
-     ./server fifo_server fifo_client
+     ./server server_name fifo_client
+     
+     il messaggio, la chiave e l'azione da svolgere sono letti dalla fifo, separati l'uno dall'altro da un carattere '-'
      
      azione = 0 -> codifica
      azione = 1 -> decodifica
      */
+    server s;
 	int fifo_server,fifo_client;
     char *key;
     char* fifo_server_name;
@@ -38,19 +41,30 @@ int main(int argc, char **argv) {
     /*
      TODO: lettura argv
      */
+    if(argc < 2){
+        printf("Numero argomenti insufficiente\n");
+    }else{
+        s = (server)argv[0];
+        fifo_client_name = argv[1];
+    }
 
-	fifo_server = open(fifo_server_name,O_RDWR);//apre fifo server in read/write
+    //apre fifo server in read/write
+	fifo_server = open(s.fifo_server_name,O_RDWR);
 	if(fifo_server < 1){
         printf("Errore apertura fifo_server");
         return(1);
 	}
     
-	buf = malloc(strlen(msg));//alloca il buffer
+    
+    /* TODO: implementare la lettura dalla fifo
+	buf = malloc(256*sizeof(char));//alloca il buffer
 	read(fifo_server,buf,strlen(msg));//legge dalla fifo_server e scrive il messaggio in buf
+    */
+    
+    
     
 	printf("msg read in fifo_server\n");
 	printf("***data read: %s***\n", buf);
-	sleep(1);
     
     //viene eseguita la de/codifica del messaggio
     if(azione){
@@ -66,8 +80,10 @@ int main(int argc, char **argv) {
 	 printf("Errore apertura fifo_client");
         return(2);
 	}
-
-	write(fifo_client,buf,100*sizeof(char)); 
+    
+    //invia il messaggio al client
+	write(fifo_client,buf,strlen(msg));
+    
 	printf("\n Data sent to client \n");
 
 	close(fifo_server);
