@@ -1,10 +1,11 @@
 /*
- Andrea Dellera 158365
- Gianluca Bortoli 159993
+Andrea Dellera 158365
+Gianluca Bortoli 159993
  
- Progetto 1
- Anno accademico 2013/2014
- */
+Progetto 1
+Anno accademico 2013/2014
+*/
+
 #include <stdio.h>
 #include <fcntl.h>
 #include <stdlib.h>
@@ -12,8 +13,6 @@
 #include "function.h"
 
 int main(int argc, char **argv) {
-    
-    
     /*
      Il server usa, per fare il suo lavoro:
         - fifo in entrata, fifo_server
@@ -29,27 +28,62 @@ int main(int argc, char **argv) {
      
      azione = 0 -> codifica
      azione = 1 -> decodifica
-     */
+    */
+
     server s;
-	int fifo_server,fifo_client;
+	int fifo_server, fifo_client;
     char *key;
     char* fifo_server_name;
     char* fifo_client_name;
     int azione;
     char *buf;
     
-    /*
-     TODO: lettura argv
-     */
-    if(argc < 2){
-        printf("Numero argomenti insufficiente\n");
-    }else{
-        s = (server)argv[0];
-        fifo_client_name = argv[1];
-    }
+    char *nvalue = NULL;
+      int minvalue = -1;
+      int maxvalue = -1;
+      int maxtext = -1;
+      int index;
+      int k;
+      
+      char *options ="n:m:M:t:"; // i ":" indicano che il parametro ha un argomento
+      
+      opterr = 0;
+        
+      while ((k = getopt (argc, argv, options)) != -1)
+        switch (k)
+            {
+        case 'n'://nome
+          nvalue = optarg;
+          break;
+                
+        case 'm'://min key
+          minvalue = atoi(optarg);
+          break;
+            
+        case 'M'://max key
+          maxvalue = atoi(optarg);
+          break;
 
-    //apre fifo server in read/write
-	fifo_server = open(s.fifo_server_name,O_RDWR);
+        case 't'://max text
+          maxtext = atoi(optarg);
+          break;
+            
+        case '?'://caso in cui non riconosco nessuno dei caratteri
+          if (isprint (optopt))
+            fprintf (stderr, "Unknown option `-%c'.\n", optopt);
+          else
+            fprintf (stderr, "Unknown option character `\\x%x'.\n", optopt);
+            return 1;
+         default:
+           abort ();
+        }
+        
+      printf ("nvalue = %s, maxtext = %d, minvalue = %d, maxvalue = %d\n", nvalue, maxtext, minvalue, maxvalue);
+        
+      for (index = optind; index < argc; index++)
+        printf ("Non-option argument %s\n", argv[index]);
+
+	fifo_server = open(s.fifo_server_name,O_RDONLY);//apre fifo server in read
 	if(fifo_server < 1){
         printf("Errore apertura fifo_server");
         return(1);
@@ -75,7 +109,7 @@ int main(int argc, char **argv) {
     }
     
     //scrittura le messaggio de/criptato al client
-	fifo_client = open(fifo_client_name,O_RDWR);
+	fifo_client = open(fifo_client_name,O_WRONLY);
 	if(fifo_server < 1) {
 	 printf("Errore apertura fifo_client");
         return(2);

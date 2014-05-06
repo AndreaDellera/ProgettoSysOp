@@ -1,10 +1,11 @@
 /*
- Andrea Dellera 158365
- Gianluca Bortoli 159993
+Andrea Dellera 158365
+Gianluca Bortoli 159993
  
- Progetto 1
- Anno accademico 2013/2014
- */
+Progetto 1
+Anno accademico 2013/2014
+*/
+
 #include <stdio.h>
 #include <fcntl.h>
 #include <stdlib.h>

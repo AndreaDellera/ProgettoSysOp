@@ -1,23 +1,17 @@
 /*
- Andrea Dellera 158365
- Gianluca Bortoli 159993
+Andrea Dellera 158365
+Gianluca Bortoli 159993
  
- Progetto 1
- Anno accademico 2013/2014
+Progetto 1
+Anno accademico 2013/2014
 */
 
 #include <stdio.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include "functions.h"
 
 const int NUMB = 26;
-
-struct server{
-    int file;
-    int maxMsg;
-    int minKey;
-    int maxKey;
-};
 
 typedef int bool; //per usare bool
 #define true 1
@@ -103,14 +97,9 @@ void decript(char* msg, char* key){
     }
 }
 
-//crea una struttura server con all'interno la fifo e i dati che lo caratterizzano
-server create_fifo(char* name, int maxMsg, int minKey, int maxKey){
-    server s = new server();
-    s.file = mkfifo(name, 0666); //0666 dà permessi in lettura e scrittura alla fifo a tutti gli utenti
-    s.maxMsg = maxMsg;
-    s.minKey = minKey;
-    s.maxKey = maxKey;
-    return s;
+int create_fifo(char* name){
+    int file = mkfifo(name, 0666); //0666 dà permessi in lettura e scrittura alla fifo a tutti gli utenti
+    return file;
 }
 
 
