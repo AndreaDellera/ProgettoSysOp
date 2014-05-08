@@ -9,8 +9,8 @@ Anno accademico 2013/2014
 #include <stdio.h>
 #include <fcntl.h>
 #include <stdlib.h>
-#include <string.h>
 #include <getopt.h>
+#include <string.h>
 #include "functions.h"
 
 int main(int argc, char **argv) {    
@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
     opterr = 0;
     
     
-    while ((k = getopt (argc, argv, "n:t:m:M:")) != -1) {
+    while ((k = getopt (argc, argv, options)) != -1) {
         switch (k) {
             case 'n'://nome server
                 server_name = optarg;
@@ -44,11 +44,7 @@ int main(int argc, char **argv) {
                 break;
                 
             case '?'://caso in cui non riconosco nessuno dei caratteri
-                if (isprint (optopt))
-                    fprintf (stderr, "Unknown option `-%c'.\n", optopt);
-                else
-                    fprintf (stderr, "Unknown option character `\\x%x'.\n", optopt);
-                return 1;
+                printf("qualcosa non va\n");
             default:
                 abort ();
         }
@@ -56,35 +52,37 @@ int main(int argc, char **argv) {
     
     //##### Creazione dello storico dei server creati, con relativi parametri, nel file lista_server.txt ######
     //senza l'attributo -n non va creato nessuno server
-
+    
     FILE *fp;
     fp = fopen("lista_server.txt", "a");
-    char toWrite[] = "";
+    char* toWrite = "";
     if(server_name != NULL){
-      strcat(toWrite, server_name);
-      strcat(toWrite, " ");
-      if(maxtext != NULL){
-          strcat(toWrite, maxtext);
-          strcat(toWrite, " ");
-      } else {
-          strcat(toWrite, "? ");//il carattere ? serve per denotare un parametro non presente in inpur, per poi poter leggere la lista dei server con i relativi parametri in modo corretto
-      }
-      if(minvalue != NULL){
-          strcat(toWrite, minvalue);
-          strcat(toWrite, " ");
-      } else {
-          strcat(toWrite, "? ");
-      }
-      if(maxvalue != NULL){
-          strcat(toWrite, maxvalue);
-          strcat(toWrite, " ");
-      } else {
-          strcat(toWrite, "? ");
-      }
-
-      fprintf(fp, "%s\n", toWrite);
-  }
+        strcat(toWrite, server_name);
+        strcat(toWrite, " ");
+        if(maxtext != NULL){
+            strcat(toWrite, maxtext);
+            strcat(toWrite, " ");
+        } else {
+            strcat(toWrite, "? ");//il carattere ? serve per denotare un parametro non presente in inpur, per poi poter leggere la lista dei server con i relativi parametri in modo corretto
+        }
+        if(minvalue != NULL){
+            strcat(toWrite, minvalue);
+            strcat(toWrite, " ");
+        } else {
+            strcat(toWrite, "? ");
+        }
+        if(maxvalue != NULL){
+            strcat(toWrite, maxvalue);
+            strcat(toWrite, " ");
+        } else {
+            strcat(toWrite, "? ");
+        }
+        
+        fprintf(fp, "%s\n", toWrite);
+    }
     
+    //TODO: apertura fifo server
 
-  return 0;
+
+    return 0;
 }

@@ -9,8 +9,10 @@ Anno accademico 2013/2014
 #include <stdio.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include <getopt.h>
 #include <string.h>
 #include "functions.h"
+
 
 int main(int argc, char **argv) {
     /*
@@ -29,14 +31,12 @@ int main(int argc, char **argv) {
      azione = 0 -> codifica
      azione = 1 -> decodifica
      */
-    
-    server s;
-	int fifo_server, fifo_client;
+    int fifo_server, fifo_client;
     char *key = NULL;
-    char *text = NULL;
+    char *msg = NULL;
     char* server_name = NULL;
     char* client_name = NULL;
-    int azione;
+    int action;
     char *buf;
     
     char *nvalue = NULL;
@@ -45,12 +45,13 @@ int main(int argc, char **argv) {
     int maxtext = -1;
     int index;
     int k;
+    int optind;
     
     char *options ="n:"; // i ":" indicano che il parametro ha un argomento
     
-    opterr = 0;
-    
-    while ((k = getopt (argc, argv, options)) != -1) {
+    int opterr = 0;
+    k = getopt (argc, argv, options);
+    while (k != -1) {
         switch (k)
         {
             case 'n'://nome
@@ -58,11 +59,7 @@ int main(int argc, char **argv) {
                 break;
                 
             case '?'://caso in cui non riconosco nessuno dei caratteri
-                if (isprint (optopt))
-                    fprintf (stderr, "Unknown option `-%c'.\n", optopt);
-                else
-                    fprintf (stderr, "Unknown option character `\\x%x'.\n", optopt);
-                return 1;
+                printf("qualcosa non va\n");
             default:
                 abort ();
         }
@@ -75,23 +72,23 @@ int main(int argc, char **argv) {
     FILE *pf;
     char * tmp_server_name = NULL;
     char *tmp = NULL;
-    fp = fopen("lista_server.txt", "r");
+    pf = fopen("lista_server.txt", "r");
     if (pf == NULL){
-        printf("lista server vuota\n")
+        printf("lista server vuota\n");
         exit(1);
     }
-    while(!foef(fp)){
+    while(feof(pf) == 0){
         fscanf(pf, "%s", tmp_server_name);
-        if(strcmq(server_name, tmp_server_name) == 0){ //stringhe uguali
+        if(strcmp(server_name, tmp_server_name) == 0){ //stringhe uguali
             fscanf(pf, "%s", tmp);
-            if(strcmq(tmp, "?") != 0){
+            if(strcmp(tmp, "?") != 0){
                 maxtext = atoi(tmp);
             }else{
                 maxtext = 100000;
             }
             fscanf(pf, "%s", tmp);
             
-            if(strcmq(tmp, "?") != 0){
+            if(strcmp(tmp, "?") != 0){
                 minvalue = atoi(tmp);
             }
             else{
@@ -99,7 +96,7 @@ int main(int argc, char **argv) {
             }
             fscanf(pf, "%s", tmp);
             
-            if(strcmq(tmp, "?") != 0){
+            if(strcmp(tmp, "?") != 0){
                 maxvalue = atoi(tmp);
             }
             else{
@@ -109,10 +106,12 @@ int main(int argc, char **argv) {
             for(int i = 0; i < 3; i++)
                 fscanf(pf, "%s", tmp_server_name);
         }
+        
+        k = getopt (argc, argv, options);
     }
     
     if (pf == NULL){
-        printf("server non presente\n")
+        printf("server non presente\n");
         exit(1);
     }
     
@@ -134,10 +133,10 @@ int main(int argc, char **argv) {
     char *terminatore= malloc(4*sizeof(char)); // dopo i parametri invio sempre '****' che
     //lettura messaggio
     msg = malloc(maxtext * sizeof(char));
-    read(client_name, msg, maxtext * sizeof(char));
+    read(fifo_server, msg, maxtext * sizeof(char));
 
     //controllo del terminatore per vedere che non ci siano messaggi/chiavi più lunghe del massimo consentito
-    read(server_name, terminatore, 4*sizeof(char));
+    read(fifo_server, terminatore, 4*sizeof(char));
     if(strcmp(terminatore, "****") > 0){
         printf("messaggio troppo lungo\n");
         return(1);
@@ -145,21 +144,22 @@ int main(int argc, char **argv) {
     
     //lettura chiave
     key = malloc(maxvalue * sizeof(char));
-    read(server_name, key, maxvalue * sizeof(char));
+    read(fifo_server, key, maxvalue * sizeof(char));
     if(strlen(key) < minvalue){
         printf("lunghezza chiave troppo piccola\n");
         return(1);
     }
-    read(server_name, terminatore, 4*sizeof(char));
+    read(fifo_server, terminatore, 4*sizeof(char));
     if(strcmp(terminatore, "****") > 0){
         printf("chiave troppo lunga");
         return(1);
     }
         //lettura azione da fare de/codifica
-    int action_buff = NULL;
-    read(server_name, action_buff, sizeof(char));
+    char *action_buff = NULL;
+    read(fifo_server, action_buff, sizeof(char));
+    action = atoi(action_buff);
     
-    read(server_name, terminatore, 4*sizeof(char));
+    read(fifo_server, terminatore, 4*sizeof(char));
     if(strcmp(terminatore, "****") > 0){
         printf("chiave troppo lunga");
         return(1);
@@ -173,10 +173,10 @@ int main(int argc, char **argv) {
 	printf("msg read in fifo_server\n");
     
     //viene eseguita la de/codifica del messaggio
-    if(azione == '0'){
+    if(action == 0){
         cript(msg, key);
     }
-    if(azione == '1'){
+    if(action == 1){
         decript(msg, key);
     }
     

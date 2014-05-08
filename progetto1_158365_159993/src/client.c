@@ -9,8 +9,12 @@ Anno accademico 2013/2014
 #include <stdio.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include <getopt.h>
+#include <string.h>
+#include "functions.h"
 
-main() {
+
+int main(int argc, char** argv) {
     /*
      Il client usa, per fare il suo lavoro
      - fifo in entrata, ergo fifo_client
@@ -29,8 +33,10 @@ main() {
     char *key = NULL;
     int file = 0;
     char *msg = NULL;
-    char action = NULL;
+    char* action = NULL;
     char *output = NULL;
+    
+    int maxtext, minvalue, maxvalue;
     
     int k;
     
@@ -60,11 +66,11 @@ main() {
                 break;
                 
             case 'e'://flag encode
-                action = '0';
+                action = "0";
                 break;
                 
             case 'd'://flag decode
-                action = '1';
+                action = "1";
                 break;
                 
             case 'o'://file output dove scrivere il messaggio una volta de/criptato
@@ -72,11 +78,7 @@ main() {
                 break;
                 
             case '?'://caso in cui non riconosco nessuno dei caratteri
-                if (isprint (optopt))
-                    fprintf (stderr, "Unknown option `-%c'.\n", optopt);
-                else
-                    fprintf (stderr, "Unknown option character `\\x%x'.\n", optopt);
-                return 1;
+                printf("qualcosa non va\n");
             default:
                 abort ();
         }
@@ -84,30 +86,27 @@ main() {
     /*----------------------------------------*/
     
     /*CONTROLLO DEI PARAMETRI DEL SERVER*/
-    int minvalue = -1;
-    int maxvalue = -1;
-    int maxtext = -1;
-    FILE *fp;
+    
+    FILE *pf;
     char * tmp_server_name = NULL;
     char *tmp = NULL;
-    
-    fp = fopen("lista_server.txt", "r");
+    pf = fopen("lista_server.txt", "r");
     if (pf == NULL){
-        printf("lista server vuota\n")
+        printf("lista server vuota\n");
         exit(1);
     }
-    while(!foef(fp)){
+    while(feof(pf) == 0){
         fscanf(pf, "%s", tmp_server_name);
-        if(strcmq(server_name, tmp_server_name) == 0){ //stringhe uguali
+        if(strcmp(server_name, tmp_server_name) == 0){ //stringhe uguali
             fscanf(pf, "%s", tmp);
-            if(strcmq(tmp, "?") != 0){
+            if(strcmp(tmp, "?") != 0){
                 maxtext = atoi(tmp);
             }else{
-                maxtext = 100000; //lunghezza massima di default, se non specificata dall'utente
+                maxtext = 100000;
             }
             fscanf(pf, "%s", tmp);
             
-            if(strcmq(tmp, "?") != 0){
+            if(strcmp(tmp, "?") != 0){
                 minvalue = atoi(tmp);
             }
             else{
@@ -115,7 +114,7 @@ main() {
             }
             fscanf(pf, "%s", tmp);
             
-            if(strcmq(tmp, "?") != 0){
+            if(strcmp(tmp, "?") != 0){
                 maxvalue = atoi(tmp);
             }
             else{
@@ -125,13 +124,17 @@ main() {
             for(int i = 0; i < 3; i++)
                 fscanf(pf, "%s", tmp_server_name);
         }
+        
+        k = getopt (argc, argv, options);
     }
     
     if (pf == NULL){
-        printf("server non presente\n")
+        printf("server non presente\n");
         exit(1);
     }
-/*------*/
+
+    
+    /*------*/
 
 	fifo_server = open(server_name,O_RDWR);//open fifo server
 	if(fifo_server < 0) {
@@ -154,10 +157,10 @@ main() {
 	}
 
 	buf = malloc(100*sizeof(char));
-	read(fifo_client, msg, strlen(msg));
+	read(fifo_client, msg, maxtext);
 	printf("\n ***Reply from server is: %s***\n",buf);
 
 	close(fifo_server);
 	close(fifo_client);
-    unlink(fifo_client);
+    unlink(client_name);
 }
