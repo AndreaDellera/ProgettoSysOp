@@ -42,7 +42,7 @@ void cript(char* msg, char* key){
         
         int off = ((int)msg[m] + (int)key[k] - 96*2 -1) % NUMB;//offset da sommare al carattere --> xk devo togliere da tutto una 'a', mentre un'altra 'a' è lo psostamento di +1 e perciò devo togliere 96 e non 97
         
-        if(msg[m] != ' '){//gestisco gli spazi del messaggio iniziale che vanno rispettati
+        if((msg[m]>= 'a' && msg[m]<='z')||(msg[m]>= 'A' && msg[m]<='Z')){//gestisco gli spazi del messaggio iniziale che vanno rispettati e anche i casatteri speciali
             if(maiusc){//gestisco se è maiuscola la lettera del messaggio iniziale
                 msg[m] = 'A' + off;
             }else{
@@ -79,7 +79,7 @@ void decript(char* msg, char* key){
         
         int off = ((int)msg[m] - (int)key[k] -1) % NUMB;//offset che mi dice la distanza tra due lettere misurata sottraendo i rispettici caratteri ASCII
         
-        if(msg[m] != ' '){//gestisco gli spazi del messaggio iniziale che vanno rispettati
+        if((msg[m]>= 'a' && msg[m]<='z')||(msg[m]>= 'A' && msg[m]<='Z')){//gestisco gli spazi del messaggio iniziale che vanno rispettati e anche i casatteri speciali
             if(maiusc){//gestisco se è maiuscola la lettera del messaggio iniziale
                 msg[m] = 'A' + off;
                 if((int)msg[m] < 65){//se la lettera scende sotto 65 vuol dire che devo ripartire dalla z
