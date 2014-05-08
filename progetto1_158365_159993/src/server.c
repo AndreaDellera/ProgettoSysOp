@@ -15,114 +15,182 @@ Anno accademico 2013/2014
 int main(int argc, char **argv) {
     /*
      Il server usa, per fare il suo lavoro:
-        - fifo in entrata, fifo_server
-        - fifo in uscita, fifo_client
-        - messaggio da criptare
-        - chiave
+     - fifo in entrata, fifo_server
+     - fifo in uscita, fifo_client
+     - messaggio da criptare
+     - chiave
      
      Diciamo che gli argomenti vengono presi così
      
-     ./server server_name fifo_client
+     ./server -n server_name
      
      il messaggio, la chiave e l'azione da svolgere sono letti dalla fifo, separati l'uno dall'altro da un carattere '-'
      
      azione = 0 -> codifica
      azione = 1 -> decodifica
-    */
-
-  server s;
+     */
+    
+    server s;
 	int fifo_server, fifo_client;
-    char *key;
-    char* fifo_server_name;
-    char* fifo_client_name;
+    char *key = NULL;
+    char *text = NULL;
+    char* server_name = NULL;
+    char* client_name = NULL;
     int azione;
     char *buf;
     
     char *nvalue = NULL;
-      int minvalue = -1;
-      int maxvalue = -1;
-      int maxtext = -1;
-      int index;
-      int k;
-      
-      char *options ="n:m:M:t:"; // i ":" indicano che il parametro ha un argomento
-      
-      opterr = 0;
-        
-      while ((k = getopt (argc, argv, options)) != -1) {
+    int minvalue = -1;
+    int maxvalue = -1;
+    int maxtext = -1;
+    int index;
+    int k;
+    
+    char *options ="n:"; // i ":" indicano che il parametro ha un argomento
+    
+    opterr = 0;
+    
+    while ((k = getopt (argc, argv, options)) != -1) {
         switch (k)
-            {
-        case 'n'://nome
-          nvalue = optarg;
-          break;
+        {
+            case 'n'://nome
+                server_name = optarg;
+                break;
                 
-        case 'm'://min key
-          minvalue = atoi(optarg);
-          break;
-            
-        case 'M'://max key
-          maxvalue = atoi(optarg);
-          break;
-
-        case 't'://max text
-          maxtext = atoi(optarg);
-          break;
-            
-        case '?'://caso in cui non riconosco nessuno dei caratteri
-          if (isprint (optopt))
-            fprintf (stderr, "Unknown option `-%c'.\n", optopt);
-          else
-            fprintf (stderr, "Unknown option character `\\x%x'.\n", optopt);
-            return 1;
-         default:
-           abort ();
+            case '?'://caso in cui non riconosco nessuno dei caratteri
+                if (isprint (optopt))
+                    fprintf (stderr, "Unknown option `-%c'.\n", optopt);
+                else
+                    fprintf (stderr, "Unknown option character `\\x%x'.\n", optopt);
+                return 1;
+            default:
+                abort ();
         }
     }
-        
-      printf ("nvalue = %s, maxtext = %d, minvalue = %d, maxvalue = %d\n", nvalue, maxtext, minvalue, maxvalue);
-        
-      for (index = optind; index < argc; index++)
+    for (index = optind; index < argc; index++)
         printf ("Non-option argument %s\n", argv[index]);
-
-	fifo_server = open(s.fifo_server_name,O_RDONLY);//apre fifo server in read
+    
+    /*CONTROLLO DEI PARAMETRI DEL SERVER*/
+    
+    FILE *fp;
+    char * tmp_server_name = NULL;
+    char *tmp = NULL;
+    fp = fopen("lista_server.txt", "r");
+    if (pf == NULL){
+        printf("lista server vuota\n")
+        exit(1);
+    }
+    while(!foef(fp)){
+        fscanf(pf, "%s", tmp_server_name);
+        if(strcmq(server_name, tmp_server_name) == 0){ //stringhe uguali
+            fscanf(pf, "%s", tmp);
+            if(strcmq(tmp, "?") != 0){
+                maxtext = atoi(tmp);
+            }else{
+                maxtext = 100000;
+            }
+            fscanf(pf, "%s", tmp);
+            
+            if(strcmq(tmp, "?") != 0){
+                minvalue = atoi(tmp);
+            }
+            else{
+                minvalue = 100000;
+            }
+            fscanf(pf, "%s", tmp);
+            
+            if(strcmq(tmp, "?") != 0){
+                maxvalue = atoi(tmp);
+            }
+            else{
+                maxvalue = 100000;
+            }
+        }else{
+            for(int i = 0; i < 3; i++)
+                fscanf(pf, "%s", tmp_server_name);
+        }
+    }
+    
+    if (pf == NULL){
+        printf("server non presente\n")
+        exit(1);
+    }
+    
+    /*----------------------------------*/
+    
+	fifo_server = open(server_name,O_RDONLY);//apre fifo server in read
 	if(fifo_server < 1){
-    printf("Errore apertura fifo_server");
-    return(1);
+        printf("Errore apertura fifo_server");
+        return(1);
 	}
+
+    /*LETTURA NOME DELLA FIFO CLIENT*/
+    buf = malloc(256*sizeof(char));//alloca il buffer
+    read(fifo_server,buf,strlen(msg));//legge dalla fifo_server e scrive il messaggio in buf
+    client_name = buf;
+    /*----------------------------------*/
+
+    /*CONTROLLI DA ESEGUIRE SUI PARAMENTRI*/
+    char *terminatore= malloc(4*sizeof(char)); // dopo i parametri invio sempre '****' che
+        //lettura messaggio
+    char *text_buff = malloc(maxtext*sizeof(char));
+    read(client_name, text_buff, maxtext*sizeof(char));
+    
+    //TODO
+    
+    read(server_name, terminatore, 4*sizeof(char));
+    if(strcmp(terminatore, "****") > 0){
+        printf("messaggio troppo lungo\n");
+        return(1);
+    }
+        //lettura chiave
+    char *buff_key = malloc(maxvalue*sizeof(char));
+    read(server_name, key, maxvalue*sizeof(char));
+    if(strlen(key) < minvalue){
+        printf("lunghezza chiave troppo piccola\n");
+        return(1);
+    }
+    
+    read(server_name, terminatore, 4*sizeof(char));
+    if(strcmp(terminatore, "****") > 0){
+        printf("chiave troppo lunga");
+        return(1);
+    }
+        //lettura azione da fare de/codifica
+    char *action_buff = malloc(sizeof(char));
+    read(server_name, action_buff, sizeof(char));
     
     
-  /* TODO: implementare la lettura dalla fifo
-	buf = malloc(256*sizeof(char));//alloca il buffer
-	read(fifo_server,buf,strlen(msg));//legge dalla fifo_server e scrive il messaggio in buf
-  */
+
     
-    
+    /*----------------------------------*/
+
     
 	printf("msg read in fifo_server\n");
 	printf("***data read: %s***\n", buf);
     
-  //viene eseguita la de/codifica del messaggio
-  if(azione){
-      decript(msg, key);
-  }
-  if(!azione){
-      cript(msg, key);
-  }
+    //viene eseguita la de/codifica del messaggio
+    if(azione){
+        decript(msg, key);
+    }
+    if(!azione){
+        cript(msg, key);
+    }
     
-  //scrittura le messaggio de/criptato al client
-	fifo_client = open(fifo_client_name,O_WRONLY);
+    //scrittura le messaggio de/criptato al client
+	fifo_client = open(client_name,O_WRONLY);
 	if(fifo_server < 1) {
-	 printf("Errore apertura fifo_client");
+        printf("Errore apertura fifo_client");
         return(2);
 	}
     
-  //invia il messaggio al client
+    //invia il messaggio al client
 	write(fifo_client,buf,strlen(msg));
     
 	printf("\n Data sent to client \n");
-
+    
 	close(fifo_server);
 	close(fifo_client);
     
-  return 0;
+    return 0;
 }
