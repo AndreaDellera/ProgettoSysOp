@@ -66,15 +66,22 @@ int main(int argc, char **argv) {
       if(maxtext != NULL){
           strcat(toWrite, maxtext);
           strcat(toWrite, " ");
+      } else {
+          strcat(toWrite, "? ");//il carattere ? serve per denotare un parametro non presente in inpur, per poi poter leggere la lista dei server con i relativi parametri in modo corretto
       }
       if(minvalue != NULL){
           strcat(toWrite, minvalue);
           strcat(toWrite, " ");
+      } else {
+          strcat(toWrite, "? ");
       }
       if(maxvalue != NULL){
           strcat(toWrite, maxvalue);
           strcat(toWrite, " ");
+      } else {
+          strcat(toWrite, "? ");
       }
+
       fprintf(fp, "%s\n", toWrite);
   }
     
