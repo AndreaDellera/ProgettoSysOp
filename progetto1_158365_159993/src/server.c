@@ -132,34 +132,38 @@ int main(int argc, char **argv) {
 
     /*CONTROLLI DA ESEGUIRE SUI PARAMENTRI*/
     char *terminatore= malloc(4*sizeof(char)); // dopo i parametri invio sempre '****' che
-        //lettura messaggio
-    char *text_buff = malloc(maxtext*sizeof(char));
-    read(client_name, text_buff, maxtext*sizeof(char));
-    
-    //TODO
-    
+    //lettura messaggio
+    msg = malloc(maxtext * sizeof(char));
+    read(client_name, msg, maxtext * sizeof(char));
+
+    //controllo del terminatore per vedere che non ci siano messaggi/chiavi più lunghe del massimo consentito
     read(server_name, terminatore, 4*sizeof(char));
     if(strcmp(terminatore, "****") > 0){
         printf("messaggio troppo lungo\n");
         return(1);
     }
-        //lettura chiave
-    char *buff_key = malloc(maxvalue*sizeof(char));
-    read(server_name, key, maxvalue*sizeof(char));
+    
+    //lettura chiave
+    key = malloc(maxvalue * sizeof(char));
+    read(server_name, key, maxvalue * sizeof(char));
     if(strlen(key) < minvalue){
         printf("lunghezza chiave troppo piccola\n");
         return(1);
     }
-    
     read(server_name, terminatore, 4*sizeof(char));
     if(strcmp(terminatore, "****") > 0){
         printf("chiave troppo lunga");
         return(1);
     }
         //lettura azione da fare de/codifica
-    char *action_buff = malloc(sizeof(char));
+    int action_buff = NULL;
     read(server_name, action_buff, sizeof(char));
     
+    read(server_name, terminatore, 4*sizeof(char));
+    if(strcmp(terminatore, "****") > 0){
+        printf("chiave troppo lunga");
+        return(1);
+    }
     
 
     
@@ -167,25 +171,24 @@ int main(int argc, char **argv) {
 
     
 	printf("msg read in fifo_server\n");
-	printf("***data read: %s***\n", buf);
     
     //viene eseguita la de/codifica del messaggio
-    if(azione){
-        decript(msg, key);
-    }
-    if(!azione){
+    if(azione == '0'){
         cript(msg, key);
+    }
+    if(azione == '1'){
+        decript(msg, key);
     }
     
     //scrittura le messaggio de/criptato al client
-	fifo_client = open(client_name,O_WRONLY);
-	if(fifo_server < 1) {
+	fifo_client = open(client_name, O_WRONLY);
+	if(fifo_client < 1) {
         printf("Errore apertura fifo_client");
         return(2);
 	}
     
     //invia il messaggio al client
-	write(fifo_client,buf,strlen(msg));
+	write(fifo_client, msg, maxtext);
     
 	printf("\n Data sent to client \n");
     
