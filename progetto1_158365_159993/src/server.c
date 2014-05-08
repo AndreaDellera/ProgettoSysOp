@@ -10,7 +10,7 @@ Anno accademico 2013/2014
 #include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
-#include "function.h"
+#include "functions.h"
 
 int main(int argc, char **argv) {
     /*
@@ -72,7 +72,7 @@ int main(int argc, char **argv) {
     
     /*CONTROLLO DEI PARAMETRI DEL SERVER*/
     
-    FILE *fp;
+    FILE *pf;
     char * tmp_server_name = NULL;
     char *tmp = NULL;
     fp = fopen("lista_server.txt", "r");
