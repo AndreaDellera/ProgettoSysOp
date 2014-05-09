@@ -98,8 +98,7 @@ void decript(char* msg, char* key){
 }
 
 int create_fifo(char* name){
-    int file = mkfifo(name, 0666); //0666 dà permessi in lettura e scrittura alla fifo a tutti gli utenti
-    return file;
+    return file = mkfifo(name, 0666); //0666 dà permessi in lettura e scrittura alla fifo a tutti gli utenti
 }
 
 

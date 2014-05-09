@@ -82,6 +82,7 @@ int main(int argc, char **argv) {
     }
     
     //TODO: apertura fifo server
+    create_fifo(server_name);
 
 
     return 0;
