@@ -60,8 +60,9 @@ int main(int argc, char **argv) {
                 
             case '?'://caso in cui non riconosco nessuno dei caratteri
                 printf("qualcosa non va\n");
+                exit(1);
             default:
-                abort ();
+                abort();
         }
     }
     for (index = optind; index < argc; index++)

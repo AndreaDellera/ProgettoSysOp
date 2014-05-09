@@ -79,6 +79,7 @@ int main(int argc, char** argv) {
                 
             case '?'://caso in cui non riconosco nessuno dei caratteri
                 printf("qualcosa non va\n");
+                exit(1);
             default:
                 abort ();
         }
@@ -142,23 +143,26 @@ int main(int argc, char** argv) {
 		exit(-1);
 	}
     
-	write(fifo_server, msg, maxtext);//writes msg in fifo server
+    write(fifo_server, client_name, 256*sizeof(char));//scrive il nome della fifo dove il server andrà a scrivere
     write(fifo_server, "****", 4 * sizeof(char));
+	write(fifo_server, msg, maxtext);//writes msg in fifo server
+    write(fifo_server, "****", 4 * sizeof(char));//carattere separatore
     write(fifo_server, key, maxvalue);
     write(fifo_server, "****", 4 * sizeof(char));
     write(fifo_server, action, sizeof(char));
     write(fifo_server, "****", 4 * sizeof(char));
 
 
-	fifo_client = open("fifo_client",O_RDWR);//open fifo client
+	fifo_client = open(client_name,O_RDWR);//apre fifo client e si mette in ascolto
 	if(fifo_client < 0) {
 		printf("Error in opening file");
 	  exit(-1);
 	}
 
-	buf = malloc(100*sizeof(char));
-	read(fifo_client, msg, maxtext);
-	printf("\n ***Reply from server is: %s***\n",buf);
+	buf = malloc(maxtext * sizeof(char));
+	read(fifo_client, buf, maxtext);
+    msg = buf;
+	printf("\n ***Reply from server is: %s***\n",msg);
 
 	close(fifo_server);
 	close(fifo_client);
