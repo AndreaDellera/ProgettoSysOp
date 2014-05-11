@@ -96,6 +96,7 @@ int main(int argc, char** argv) {
         printf("lista server vuota\n");
         exit(1);
     }
+
     while(feof(pf) == 0){
         fscanf(pf, "%s", tmp_server_name);
         if(strcmp(server_name, tmp_server_name) == 0){ //stringhe uguali
@@ -122,7 +123,8 @@ int main(int argc, char** argv) {
                 maxvalue = 100000;
             }
         }else{
-            for(int i = 0; i < 3; i++)
+            int i;
+            for(i = 0; i < 3; i++)
                 fscanf(pf, "%s", tmp_server_name);
         }
         
@@ -135,7 +137,7 @@ int main(int argc, char** argv) {
     }
 
     
-    /*------*/
+    /*-------------------*/
 
 	fifo_server = open(server_name,O_RDWR);//open fifo server
 	if(fifo_server < 0) {
@@ -156,7 +158,7 @@ int main(int argc, char** argv) {
 	fifo_client = open(client_name,O_RDWR);//apre fifo client e si mette in ascolto
 	if(fifo_client < 0) {
 		printf("Error in opening file");
-	  exit(-1);
+	    exit(-1);
 	}
 
 	buf = malloc(maxtext * sizeof(char));
@@ -164,7 +166,7 @@ int main(int argc, char** argv) {
     msg = buf;
 	printf("\n ***Reply from server is: %s***\n",msg);
 
-	close(fifo_server);
+	close(fifo_server);//chiude le fifo
 	close(fifo_client);
-    unlink(client_name);
+    unlink(client_name);//elimina fifo client
 }

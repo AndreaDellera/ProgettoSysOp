@@ -104,7 +104,8 @@ int main(int argc, char **argv) {
                 maxvalue = 100000;
             }
         }else{
-            for(int i = 0; i < 3; i++)
+            int i;
+            for(i = 0; i < 3; i++)
                 fscanf(pf, "%s", tmp_server_name);
         }
         

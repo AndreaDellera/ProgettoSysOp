@@ -18,6 +18,10 @@ bin:
 	#con un target “bin” (make bin) si devono generare i binari compilati eseguibili 
 	#dentro una cartella da crearsi automaticamente denominata “bin” che conterrà i 
 	#soli file oggetto eseguibili
+	gcc codecclient.c -o codecclient
+	gcc codecserver.c -o codecserver
+	gcc server.c -o server
+	gcc client.c -o client
 
 assets:
 	#con un target “assets” (make assets) si devono poter generare dei possibili file di 

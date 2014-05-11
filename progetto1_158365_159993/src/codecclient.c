@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
     }
     
     /*COMPONGO COMANDO PER IL CLIENT*/
-    char* client_name = "clientDioBoia"; //implementare generazione nome casuale
+    char* client_name = "client1"; //TODO: implementare generazione nomi diversi per ogni client che si crea
     char* client_cmd = "client -s ";
     if((server_name != NULL) && (action != NULL) && (key != NULL)){
         strcat(client_cmd, server_name);
@@ -74,10 +74,10 @@ int main(int argc, char **argv) {
         strcat(client_cmd, " -k ");
         strcat(client_cmd, key);
         if(strcmp(action, "0") == 0){
-            strcat(client_cmd, " -e");//crypt
+            strcat(client_cmd, " -e");//eseguo crypt
         }
         if(strcmp(action, "1") == 0){
-            strcat(client_cmd, " -d");//decrypt
+            strcat(client_cmd, " -d");//eseguo decrypt
         }
     }
     
@@ -87,5 +87,6 @@ int main(int argc, char **argv) {
     
     system(client_cmd);
     system(server_cmd);
+
     return 0;
 }

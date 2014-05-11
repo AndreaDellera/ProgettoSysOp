@@ -24,7 +24,6 @@ int main(int argc, char **argv) {
     char *options = "n:t:m:M:"; // i ":" indicano che il parametro ha un argomento
     opterr = 0;
     
-    
     while ((k = getopt (argc, argv, options)) != -1) {
         switch (k) {
             case 'n'://nome server
@@ -54,23 +53,26 @@ int main(int argc, char **argv) {
     //senza l'attributo -n non va creato nessuno server
     
     FILE *fp;
-    fp = fopen("lista_server.txt", "a");
+    fp = fopen("lista_server.txt", "a+");
     char* toWrite = "";
     if(server_name != NULL){
         strcat(toWrite, server_name);
         strcat(toWrite, " ");
+        
         if(maxtext != NULL){
             strcat(toWrite, maxtext);
             strcat(toWrite, " ");
         } else {
-            strcat(toWrite, "? ");//il carattere ? serve per denotare un parametro non presente in inpur, per poi poter leggere la lista dei server con i relativi parametri in modo corretto
+            strcat(toWrite, "? ");//il carattere ? serve per denotare un parametro non presente in inpu, per poi poter leggere la lista dei server con i relativi parametri in modo corretto
         }
+
         if(minvalue != NULL){
             strcat(toWrite, minvalue);
             strcat(toWrite, " ");
         } else {
             strcat(toWrite, "? ");
         }
+
         if(maxvalue != NULL){
             strcat(toWrite, maxvalue);
             strcat(toWrite, " ");
@@ -82,8 +84,7 @@ int main(int argc, char **argv) {
     }
     
     //TODO: apertura fifo server
-    create_fifo(server_name);
-
+    //create_fifo(server_name);
 
     return 0;
 }
