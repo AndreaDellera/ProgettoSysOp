@@ -50,11 +50,10 @@ int main(int argc, char **argv) {
     }
     
     //##### Creazione dello storico dei server creati, con relativi parametri, nel file lista_server.txt ######
-    //senza l'attributo -n non va creato nessuno server
-    
+    //senza l'attributo -n non va creato nessuno server    
     FILE *fp;
     fp = fopen("lista_server.txt", "a+");
-    char* toWrite = "";
+    char toWrite[] = "";
     if(server_name != NULL){
         strcat(toWrite, server_name);
         strcat(toWrite, " ");
@@ -81,6 +80,7 @@ int main(int argc, char **argv) {
         }
         
         fprintf(fp, "%s\n", toWrite);
+        //write(fp,toWrite,strlen(toWrite));
     }
     
     //TODO: apertura fifo server
