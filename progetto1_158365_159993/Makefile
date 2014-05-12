@@ -18,10 +18,17 @@ bin:
 	#con un target “bin” (make bin) si devono generare i binari compilati eseguibili 
 	#dentro una cartella da crearsi automaticamente denominata “bin” che conterrà i 
 	#soli file oggetto eseguibili
-	gcc codecclient.c -o codecclient
-	gcc codecserver.c -o codecserver
-	gcc server.c -o server
-	gcc client.c -o client
+	mkdir bin
+	gcc ./src/codecserver.c ./src/functions.c -o codecserver
+	gcc ./src/server.c ./src/functions.c -o server
+	gcc ./src/codecclient.c -o codecclient
+	gcc ./src/client.c -o client
+	@echo "All compiled succesfully !"
+	mv codecserver ./bin/
+	mv codecclient ./bin/
+	mv server ./bin/
+	mv client ./bin/
+	@echo "File copied succesfully in /usr/bin/ !"
 
 assets:
 	#con un target “assets” (make assets) si devono poter generare dei possibili file di 
@@ -37,5 +44,6 @@ clean:
 	#con un target “clean” si eliminano eventuali file temporanei, binari e assets 
 	#generati (questa regola deve essere sempre richiamata automaticamente dalle 
 	#altre)
-	rm -r assets/
+	rm -r ./bin/
 	rm -f *.o
+	@echo "Clean succesfully !"
