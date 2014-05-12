@@ -20,6 +20,7 @@ int main(int argc, char **argv) {
     char *maxvalue = NULL;
     char *maxtext = NULL;
     int k;
+    int file;
     
     char *options = "n:t:m:M:"; // i ":" indicano che il parametro ha un argomento
     opterr = 0;
@@ -28,6 +29,11 @@ int main(int argc, char **argv) {
         switch (k) {
             case 'n'://nome server
                 server_name = optarg;
+                file = create_fifo(argv[optind-1]); //creo una fifo con il nome passato con argomento -n
+                if(file < 0) {//error handling
+                    printf("impossibile creare una fifo per il server %s\n", server_name);
+                    exit(-1);
+                }
                 break;
                 
             case 't'://max text
@@ -50,7 +56,7 @@ int main(int argc, char **argv) {
     }
     
     //##### Creazione dello storico dei server creati, con relativi parametri, nel file lista_server.txt ######
-    //senza l'attributo -n non va creato nessuno server    
+    //##### Senza l'attributo -n non va creato nessuno server    
     FILE *fp;
     fp = fopen("lista_server.txt", "a+");
     char toWrite[] = "";
@@ -62,7 +68,11 @@ int main(int argc, char **argv) {
             strcat(toWrite, maxtext);
             strcat(toWrite, " ");
         } else {
-            strcat(toWrite, "? ");//il carattere ? serve per denotare un parametro non presente in inpu, per poi poter leggere la lista dei server con i relativi parametri in modo corretto
+            strcat(toWrite, "? ");
+            /*
+            il carattere ? serve per denotare un parametro non presente in input 
+            per poi poter leggere la lista dei server con i relativi parametri in modo corretto
+            */
         }
 
         if(minvalue != NULL){
@@ -80,11 +90,7 @@ int main(int argc, char **argv) {
         }
         
         fprintf(fp, "%s\n", toWrite);
-        //write(fp,toWrite,strlen(toWrite));
     }
     
-    //TODO: apertura fifo server
-    //create_fifo(server_name);
-
     return 0;
 }
