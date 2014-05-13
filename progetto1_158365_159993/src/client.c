@@ -21,7 +21,6 @@ int main(int argc, char** argv) {
      - fifo in uscita, ergo fifo_server
      - messaggio da criptare
      - chiave
-     
     */
     int fifo_server;// va dal client al server
     int fifo_client;// va dal server al client
@@ -84,10 +83,8 @@ int main(int argc, char** argv) {
                 abort ();
         }
     }
-    /*----------------------------------------*/
     
-    /*CONTROLLO DEI PARAMETRI DEL SERVER*/
-    
+    /*CONTROLLO DEI PARAMETRI DEL SERVER (min e max chiave e lunghezza massima testo)*/
     FILE *pf;
     char * tmp_server_name = NULL;
     char *tmp = NULL;
@@ -136,10 +133,8 @@ int main(int argc, char** argv) {
         exit(1);
     }
 
-    
-    /*-------------------*/
-
-	fifo_server = open(server_name,O_RDWR);//open fifo server
+    /*COMUNICAZIONE TRA SERVER E CLIENT*/
+	fifo_server = open(server_name,O_WRONLY);//open fifo server in r/w
 	if(fifo_server < 0) {
 		printf("Error in opening file");
 		exit(-1);
@@ -154,8 +149,7 @@ int main(int argc, char** argv) {
     write(fifo_server, action, sizeof(char));
     write(fifo_server, "****", 4 * sizeof(char));
 
-
-	fifo_client = open(client_name,O_RDWR);//apre fifo client e si mette in ascolto
+	fifo_client = open(client_name,O_RDONLY);//apre fifo client e si mette in ascolto per una risposta da parte del server
 	if(fifo_client < 0) {
 		printf("Error in opening file");
 	    exit(-1);
@@ -166,6 +160,7 @@ int main(int argc, char** argv) {
     msg = buf;
 	printf("\n ***Reply from server is: %s***\n",msg);
 
+    /*CHIUSURA CANALE DI COMUNICAZIONE*/
 	close(fifo_server);//chiude le fifo
 	close(fifo_client);
     unlink(client_name);//elimina fifo client

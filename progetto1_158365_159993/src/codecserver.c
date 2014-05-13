@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
     }
     
     //##### Creazione dello storico dei server creati, con relativi parametri, nel file lista_server.txt ######
-    //##### Senza l'attributo -n non va creato nessuno server    
+    //##### Senza l'attributo -n non va creato nessuno server!!    
     FILE *fp;
     fp = fopen("lista_server.txt", "a+");
     char toWrite[] = "";

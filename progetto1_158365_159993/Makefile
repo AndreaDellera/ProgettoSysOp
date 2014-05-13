@@ -14,21 +14,19 @@ all:
 	@echo "\t- \033[1mtest\033[0m: genera i binari e gli assets e si lancia l’eseguibile per provare i file di input generati"
 	@echo "\t- \033[1mclean\033[0m: elimina eventuali file temporanei, compresi binari e assets generati"
 	@echo "\n"
-bin:
-	#con un target “bin” (make bin) si devono generare i binari compilati eseguibili 
-	#dentro una cartella da crearsi automaticamente denominata “bin” che conterrà i 
-	#soli file oggetto eseguibili
+bin: clean
 	mkdir bin
 	gcc ./src/codecserver.c ./src/functions.c -o codecserver
 	gcc ./src/server.c ./src/functions.c -o server
 	gcc ./src/codecclient.c -o codecclient
 	gcc ./src/client.c -o client
-	@echo "All compiled succesfully !"
+	@echo "\tAll compiled succesfully !"
 	mv codecserver ./bin/
 	mv codecclient ./bin/
 	mv server ./bin/
 	mv client ./bin/
-	@echo "File copied succesfully in /usr/bin/ !"
+	@echo "\tFile copied succesfully in /usr/bin/ !"
+	@echo "\n"
 
 assets:
 	#con un target “assets” (make assets) si devono poter generare dei possibili file di 
@@ -41,9 +39,7 @@ test:
 	#l’eseguibile utile a provare i file di input generati 
 
 clean:
-	#con un target “clean” si eliminano eventuali file temporanei, binari e assets 
-	#generati (questa regola deve essere sempre richiamata automaticamente dalle 
-	#altre)
 	rm -r ./bin/
 	rm -f *.o
-	@echo "Clean succesfully !"
+	@echo "\tClean succesfully !"
+	@echo "\n"

@@ -16,20 +16,20 @@ Anno accademico 2013/2014
 
 int main(int argc, char **argv) {
     /*
-     Il server usa, per fare il suo lavoro:
-     - fifo in entrata, fifo_server
-     - fifo in uscita, fifo_client
-     - messaggio da criptare
-     - chiave
+    Il server usa, per fare il suo lavoro:
+    - fifo in entrata, fifo_server
+    - fifo in uscita, fifo_client
+    - messaggio da criptare
+    - chiave
      
-     Diciamo che gli argomenti vengono presi così
+    Diciamo che gli argomenti vengono presi così
      
-     ./server -n server_name
+    ./server -n server_name
      
-     il messaggio, la chiave e l'azione da svolgere sono letti dalla fifo, separati l'uno dall'altro da un carattere '-'
+    il messaggio, la chiave e l'azione da svolgere sono letti dalla fifo, separati l'uno dall'altro da un carattere '-'
      
-     azione = 0 -> codifica
-     azione = 1 -> decodifica
+    azione = 0 -> codifica
+    azione = 1 -> decodifica
      */
     int fifo_server, fifo_client;
     char *key = NULL;
@@ -69,7 +69,6 @@ int main(int argc, char **argv) {
         printf ("Non-option argument %s\n", argv[index]);
     
     /*CONTROLLO DEI PARAMETRI DEL SERVER*/
-    
     FILE *pf;
     char * tmp_server_name = NULL;
     char *tmp = NULL;
@@ -117,29 +116,25 @@ int main(int argc, char **argv) {
         exit(1);
     }
     
-    /*----------------------------------*/
-    
-	fifo_server = open(server_name,O_RDONLY);//apre fifo server in read
+    /*COMUNICAZIONE TRA SERVER E CLIENT*/
+	fifo_server = open(server_name,O_RDONLY);//apre fifo server in read per ricevere i parametri dal client
 	if(fifo_server < 1){
         printf("Errore apertura fifo_server");
         return(1);
 	}
 
-    /*LETTURA NOME DELLA FIFO CLIENT*/
-    buf = malloc(256*sizeof(char));//alloca il buffer
-    read(fifo_server,buf,strlen(msg));//legge dalla fifo_server e scrive il messaggio in buf
+    //legge dalla fifo_server il nome del client
+    buf = malloc(256*sizeof(char));
+    read(fifo_server,buf,strlen(msg));
     client_name = buf;
-    /*----------------------------------*/
 
     /*CONTROLLI DA ESEGUIRE SUI PARAMENTRI*/
-    char *terminatore= malloc(4*sizeof(char)); // dopo i parametri invio sempre '****' che
-    //lettura messaggio
+    char *terminatore= malloc(4*sizeof(char)); //dopo i parametri invio sempre '****' che
     msg = malloc(maxtext * sizeof(char));
-    read(fifo_server, msg, maxtext * sizeof(char));
+    read(fifo_server, msg, maxtext * sizeof(char));//lettura messaggio
 
-    //controllo del terminatore per vedere che non ci siano messaggi/chiavi più lunghe del massimo consentito
     read(fifo_server, terminatore, 4*sizeof(char));
-    if(strcmp(terminatore, "****") > 0){
+    if(strcmp(terminatore, "****") > 0){//controllo del terminatore per vedere che non ci siano messaggi/chiavi più lunghe del massimo consentito
         printf("messaggio troppo lungo\n");
         return(1);
     }
@@ -156,7 +151,8 @@ int main(int argc, char **argv) {
         printf("chiave troppo lunga");
         return(1);
     }
-        //lettura azione da fare de/codifica
+
+    //lettura azione da fare (de/codifica)
     char *action_buff = NULL;
     read(fifo_server, action_buff, sizeof(char));
     action = atoi(action_buff);
@@ -166,11 +162,6 @@ int main(int argc, char **argv) {
         printf("chiave troppo lunga");
         return(1);
     }
-    
-
-    
-    /*----------------------------------*/
-
     
 	printf("msg read in fifo_server\n");
     
@@ -191,9 +182,9 @@ int main(int argc, char **argv) {
     
     //invia il messaggio al client
 	write(fifo_client, msg, maxtext);
-    
 	printf("\n Data sent to client \n");
-    
+
+    /*CHIUSURA CANALE DI COMUNICAZIONE*/
 	close(fifo_server);
 	close(fifo_client);
     
