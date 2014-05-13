@@ -17,26 +17,26 @@ Anno accademico 2013/2014
 
 int main(int argc, char **argv) {    
     //##### Gestione input da linea di comando #############################
-    char server_name[100000] = "";
-    char key[100000] = "";
+    char *server_name;
+    char *key;
     int file = 0;
-    char msg[100000] = "";
-    int action = -1;
-    char output[100000] = "";
+    char *msg;
+    char *action;
+    char *output;
     
     int k;
     
-    char *options = "n:k:fm:edo:";
+    char *options = "n:k:fm:a:o:";
     opterr = 0;
     
     while ((k = getopt (argc, argv, options)) != -1) {
         switch (k) {
             case 'n'://nome server a cui connettersi
-                strcat(server_name, optarg);
+                server_name = optarg;
                 break;
                 
             case 'k'://chiave
-                strcat(key, optarg);
+                key = optarg;
                 break;
                 
             case 'f'://flag per prendere il messaggio da un file
@@ -44,19 +44,19 @@ int main(int argc, char **argv) {
                 break;
                 
             case 'm'://file origine messaggio
-                strcat(msg, optarg);
+                msg = optarg;
                 break;
                 
-            case 'e'://flag encode
-                action = 0;
-                break;
-                
-            case 'd'://flag decode
-                action = 1;
+            case 'a'://flag de/code --> 0 encode // 1 decode
+                if(atoi(optarg)==0){
+                    action = "0";
+                } else if(atoi(optarg)==1){
+                    action = "1";
+                }
                 break;
                 
             case 'o'://file output dove scrivere il messaggio una volta de/criptato
-                strcat(output, optarg);
+                output = optarg;
                 break;
                 
             case '?'://caso in cui non riconosco nessuno dei caratteri
@@ -66,49 +66,47 @@ int main(int argc, char **argv) {
         }
     }
 
+    char commandClient[] = "";
+    char commandServer[] = "";
+
     /*COMPONGO COMANDO PER IL CLIENT*/
     char numb[] = "";
     sprintf(numb, "%d", getpid());
-    char client_name[100000] = "client";
-    strcat(client_name,numb);
+    char client_name[100000] = "client";//il client_name è "client<pid>"
+    strcat(client_name, numb);
     
     printf("client name = %s\n", client_name);
+    printf("azione: %s\n", action);
 
-    char pippo[] = "";
-    char toWrite[] = "";
-    if(strcmp(server_name,"") != 0) {
-        printf("ss: %s\n\n", server_name);
-        strcat(toWrite, "client -s ");
-        strcat(toWrite, server_name);
-        strcat(pippo, "server -s ");
-        strcat(pippo, server_name);
+    if(server_name != NULL) {
+        strcat(commandClient, "client -s ");
+        strcat(commandClient, server_name);
 
-        if(strcmp(key,"") != 0){
-            strcat(toWrite, " -k ");
-            strcat(toWrite, key);
+        if(key != NULL){
+            strcat(commandClient, " -k ");
+            strcat(commandClient, key);
         }
 
-        if(strcmp(client_name,"") != 0){
-            strcat(toWrite, " -n ");
-            strcat(toWrite, client_name);
+        if(client_name != NULL){
+            strcat(commandClient, " -n ");
+            strcat(commandClient, client_name);
         }
 
-        if(action == 0){
-            strcat(toWrite, " -e");
-        } else {
-            strcat(toWrite, " -d");
-        }      
+        if(action == "0"){
+            strcat(commandClient, " -e");
+        } else if (action == "1") {
+            strcat(commandClient, " -d");
+        }  
     }
-    printf("aa: %s\n\n", toWrite);
+
+    printf("comando client: %s\n\n", commandClient);
 
     /*COMPONGO COMANDO PER IL SERVER*/
-    //printf("comando client: %s\n\n", toWrite);
+    //strcat(commandServer,"server -n ");
+    //strcat(commandServer, server_name);
 
-    strcat(pippo,"server -n ");
-    strcat(pippo, server_name);
-
-    printf("comando server: %s\n", pippo);
-    printf("comando client: %s\n\n", toWrite);
+    //printf("comando server: %s\n", commandServer);
+    
   
     
     /*AVVIO CLIENT E SERVER CON I PARAMETRI DATI*/
