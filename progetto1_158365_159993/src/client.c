@@ -14,7 +14,8 @@ Anno accademico 2013/2014
 #include "functions.h"
 
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv) {//questa roba diventa una funzione che viene chiamata da codecserver, che prende in input i dati e mi 
+                                //risparmio un altro parsing inutile e una chiamata a system
     /*
      Il client usa, per fare il suo lavoro
      - fifo in entrata, ergo fifo_client
