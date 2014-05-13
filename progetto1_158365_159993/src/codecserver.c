@@ -59,16 +59,14 @@ int main(int argc, char **argv) {
     //##### Senza l'attributo -n non va creato nessuno server!!    
     FILE *fp;
     fp = fopen("lista_server.txt", "a+");
-    char toWrite[] = "";
+    char *toWrite = malloc(sizeof(char)*2048);
     if(server_name != NULL){
-        strcat(toWrite, server_name);
-        strcat(toWrite, " ");
+        fprintf(fp,"%s ",server_name);
         
         if(maxtext != NULL){
-            strcat(toWrite, maxtext);
-            strcat(toWrite, " ");
+            fprintf(fp,"%s ",maxtext);
         } else {
-            strcat(toWrite, "? ");
+            fprintf(fp,"?");
             /*
             il carattere ? serve per denotare un parametro non presente in input 
             per poi poter leggere la lista dei server con i relativi parametri in modo corretto
@@ -76,20 +74,18 @@ int main(int argc, char **argv) {
         }
 
         if(minvalue != NULL){
-            strcat(toWrite, minvalue);
-            strcat(toWrite, " ");
+            fprintf(fp, "%s ", minvalue);
         } else {
-            strcat(toWrite, "? ");
+            fprintf(fp,"?");
         }
 
         if(maxvalue != NULL){
-            strcat(toWrite, maxvalue);
-            strcat(toWrite, " ");
+            fprintf(fp, "%s ",maxvalue);
         } else {
-            strcat(toWrite, "? ");
+            fprintf(fp,"?");
         }
         
-        fprintf(fp, "%s\n", toWrite);
+        fprintf(fp, "\n");
     }
     
     return 0;

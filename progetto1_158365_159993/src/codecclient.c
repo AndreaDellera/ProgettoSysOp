@@ -17,16 +17,16 @@ Anno accademico 2013/2014
 
 int main(int argc, char **argv) {    
     //##### Gestione input da linea di comando #############################
-    char *server_name;
-    char *key;
+    char *server_name = NULL;
+    char *key = NULL;
     int file = 0;
-    char *msg;
-    char *action;
-    char *output;
+    char *msg = NULL;
+    char *action = malloc(sizeof(char)*2);//il carattere \0 va considerato; per quello *2
+    char *output = NULL;
     
     int k;
     
-    char *options = "n:k:fm:a:o:";
+    char *options = "n:k:fm:edo:";
     opterr = 0;
     
     while ((k = getopt (argc, argv, options)) != -1) {
@@ -40,19 +40,19 @@ int main(int argc, char **argv) {
                 break;
                 
             case 'f'://flag per prendere il messaggio da un file
-                file = 1;
+                file = 1;//TODO: file da input
                 break;
                 
-            case 'm'://file origine messaggio
+            case 'm'://messaggio
                 msg = optarg;
                 break;
-                
-            case 'a'://flag de/code --> 0 encode // 1 decode
-                if(atoi(optarg)==0){
-                    action = "0";
-                } else if(atoi(optarg)==1){
-                    action = "1";
-                }
+
+            case 'e':
+                sprintf(action,"%c",'0');
+                break;
+
+            case 'd':
+                sprintf(action,"%c",'1');
                 break;
                 
             case 'o'://file output dove scrivere il messaggio una volta de/criptato
@@ -61,19 +61,18 @@ int main(int argc, char **argv) {
                 
             case '?'://caso in cui non riconosco nessuno dei caratteri
                 printf("c'è qualcosa che non va\n");
+
             default:
                 abort ();
         }
     }
 
-    char commandClient[] = "";
-    char commandServer[] = "";
+    char *commandClient = malloc(sizeof(char)*2048);
+    char *commandServer = malloc(sizeof(char)*2048);
 
     /*COMPONGO COMANDO PER IL CLIENT*/
-    char numb[] = "";
-    sprintf(numb, "%d", getpid());
-    char client_name[100000] = "client";//il client_name è "client<pid>"
-    strcat(client_name, numb);
+    char *client_name = malloc(sizeof(char)*32);
+    sprintf(client_name,"client%d",getpid());
     
     printf("client name = %s\n", client_name);
     printf("azione: %s\n", action);
@@ -92,22 +91,19 @@ int main(int argc, char **argv) {
             strcat(commandClient, client_name);
         }
 
-        if(action == "0"){
+        if(action[0] == '0'){
             strcat(commandClient, " -e");
-        } else if (action == "1") {
+        } else if (action[0] == '1') {
             strcat(commandClient, " -d");
         }  
     }
 
+
     printf("comando client: %s\n\n", commandClient);
 
-    /*COMPONGO COMANDO PER IL SERVER*/
-    //strcat(commandServer,"server -n ");
-    //strcat(commandServer, server_name);
-
-    //printf("comando server: %s\n", commandServer);
-    
-  
+    /*COMPONGO COMANDO PER IL SERVER*/    
+    sprintf(commandServer,"server -n %s",server_name);
+    printf("comando server: %s\n", commandServer);
     
     /*AVVIO CLIENT E SERVER CON I PARAMETRI DATI*/
     //system(client_cmd);
