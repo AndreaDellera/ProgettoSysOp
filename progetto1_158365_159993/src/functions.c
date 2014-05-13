@@ -101,4 +101,10 @@ int create_fifo(char* name){
     return mkfifo(name, 0666); //0666 dà permessi in lettura e scrittura alla fifo a tutti gli utenti
 }
 
+void run_client(char* name, char* key, int file, char* msg, int action){
+    //qui va tutto il corpo della funzione, praticamente tutto client.c SENZA il secondo parsing inutile
+}
 
+void run_server(char* name, int min_key, int max_key){
+    //qui va tutto il corpo della funzione, praticamente tutto server.c SENZA il secondo parsing inutile
+}
