@@ -42,5 +42,6 @@ test:
 
 clean:
 	rm -rf ./bin/
+	rm -rf ./assets/ 
 	@echo "\tClean succesfully !"
 	@echo "\n"
