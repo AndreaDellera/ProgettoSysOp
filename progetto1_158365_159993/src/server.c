@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
      
     azione = 0 -> codifica
     azione = 1 -> decodifica
-     */
+    */
     int fifo_server, fifo_client;
     char *key = NULL;
     char *msg = NULL;

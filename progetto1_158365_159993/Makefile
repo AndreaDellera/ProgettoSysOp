@@ -21,10 +21,12 @@ bin: clean
 	gcc ./src/codecclient.c -o codecclient
 	gcc ./src/client.c -o client
 	@echo "\tAll compiled succesfully !"
-	mv codecserver ./bin/
-	mv codecclient ./bin/
-	mv server ./bin/
-	mv client ./bin/
+
+install: bin
+	cp codecserver /usr/bin/
+	cp codecclient /usr/bin/
+	cp server /usr/bin/
+	cp client /usr/bin/
 	@echo "\tFile copied succesfully in /usr/bin/ !"
 	@echo "\n"
 
@@ -39,7 +41,6 @@ test:
 	#l’eseguibile utile a provare i file di input generati 
 
 clean:
-	rm -r ./bin/
-	rm -f *.o
+	rm -rf ./bin/
 	@echo "\tClean succesfully !"
 	@echo "\n"
