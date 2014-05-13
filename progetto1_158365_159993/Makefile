@@ -22,7 +22,7 @@ bin: clean
 	gcc ./src/client.c -o client
 	@echo "\tAll compiled succesfully !"
 
-install: bin
+install: clear bin
 	cp codecserver /usr/bin/
 	cp codecclient /usr/bin/
 	cp server /usr/bin/
