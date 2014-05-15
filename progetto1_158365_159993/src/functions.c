@@ -316,7 +316,7 @@ void run_server(char* server_name){
         decript(msg, key);
     }
     
-    //scrittura le messaggio de/criptato al client
+    //scrittura le messaggio de/criptato al client per rispondergli
     fifo_client = open(client_name, O_WRONLY);
     if(fifo_client < 1) {
         printf("Errore apertura fifo_client");
