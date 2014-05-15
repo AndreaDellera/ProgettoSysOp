@@ -6,6 +6,8 @@ Progetto 1
 Anno accademico 2013/2014
 */
 
+/*DEPRECATED*/
+
 #include <stdio.h>
 #include <fcntl.h>
 #include <stdlib.h>
