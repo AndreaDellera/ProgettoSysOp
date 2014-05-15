@@ -19,12 +19,16 @@ bin: clean
 	gcc ./src/codecserver.c ./src/functions.c -o codecserver
 	gcc ./src/codecclient.c -o codecclient
 	@echo "\tAll compiled succesfully !"
+	cp codecclient ./bin/
+	cp codecserver ./bin/
+	@echo "\tFiles copied succesfully in /bin/ !"
+	@echo "\n"
 
 install: clear bin
 	#NB: need root access
 	cp codecserver /usr/bin/
 	cp codecclient /usr/bin/
-	@echo "\tFile copied succesfully in /usr/bin/ !"
+	@echo "\tFiles copied succesfully in /usr/bin/ !"
 	@echo "\n"
 
 uninstall:	
@@ -32,6 +36,7 @@ uninstall:
 	rm -rf /usr/bin/codecserver
 	rm -rf /usr/bin/codecclient
 	@echo "\tPrograms uninstalled succesfully !"
+	@echo "\n"
 
 assets:
 	#con un target “assets” (make assets) si devono poter generare dei possibili file di 
