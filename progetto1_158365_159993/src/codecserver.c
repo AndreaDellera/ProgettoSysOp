@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
     char *maxvalue = NULL;
     char *maxtext = NULL;
     int k;
-    int file;
+    int file;//file per fifo server
     
     char *options = "n:t:m:M:"; // i ":" indicano che il parametro ha un argomento
     opterr = 0;
@@ -88,6 +88,7 @@ int main(int argc, char **argv) {
         fprintf(fp, "\n");
     }
 
+    /*AVVIO SERVER CON I PARAMETRI DATI*/
     run_server(server_name);
     
     return 0;

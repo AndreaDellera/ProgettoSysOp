@@ -18,7 +18,7 @@ void decript(char* msg, char* key); //funzione per decriptare il messaggio
 
 int create_fifo(char* name); //funzione per creare una fifo con un determinato nome
 
-void run_client(char* server_name, char* client_name, char* key, int file, char* msg, int action, char* output);
+void run_client(char* server_name, char* client_name, char* key, int file, char* msg, char* action, char* output);
 void run_server(char* server_name);
 
 #endif

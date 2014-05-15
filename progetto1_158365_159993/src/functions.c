@@ -102,12 +102,20 @@ int create_fifo(char* name){
     return mkfifo(name, 0666); //0666 dà permessi in lettura e scrittura alla fifo a tutti gli utenti
 }
 
-void run_client(char* server_name, char* client_name, char* key, int file, char* msg, int action, char* output){
+void run_client(char* server_name, char* client_name, char* key, int file, char* msg, char *action, char* output){
     int fifo_server;// va dal client al server
     int fifo_client;// va dal server al client
     char *buf;
+    int file_cl;//file per fifo client
 
     int maxtext, minvalue, maxvalue;
+
+    /*CREO LA FIFO DEL CLIENT*/
+    file_cl = create_fifo(client_name);
+    if(file_cl < 0){
+        printf("impossibile creare fifo per il client %s\n", client_name);
+        exit(-1);
+    }
 
     /*CONTROLLO DEI PARAMETRI DEL SERVER (min e max chiave e lunghezza massima testo)*/
     FILE *pf;
@@ -197,13 +205,13 @@ void run_server(char* server_name){
     char *buf = NULL;
     char *key = NULL;
     char *msg = NULL;
-    char* client_name = NULL;
+    char *client_name = NULL;
     int action;
     int minvalue = -1;
     int maxvalue = -1;
     int maxtext = -1;
 
-    /*CONTROLLO DEI PARAMETRI DEL SERVER*/
+    /*CONTROLLO DEI PARAMETRI DEL SERVER DAL FILE CON IL LOG DEI SERVER CREATI*/
     FILE *pf;
     char * tmp_server_name = NULL;
     char *tmp = NULL;
@@ -212,6 +220,7 @@ void run_server(char* server_name){
         printf("lista server vuota\n");
         exit(1);
     }
+
     while(feof(pf) == 0){
         fscanf(pf, "%s", tmp_server_name);
         if(strcmp(server_name, tmp_server_name) == 0){ //stringhe uguali

@@ -63,7 +63,7 @@ int main(int argc, char **argv) {
                 printf("c'è qualcosa che non va\n");
 
             default:
-                abort ();
+                abort();
         }
     }
 
@@ -74,7 +74,7 @@ int main(int argc, char **argv) {
     printf("client name = %s\n", client_name);
     printf("azione: %s\n", action);
     
-    /*AVVIO CLIENT E SERVER CON I PARAMETRI DATI*/
+    /*AVVIO CLIENT CON I PARAMETRI DATI*/
     run_client(server_name, client_name, key, file, msg, action, output);
 
     return 0;
