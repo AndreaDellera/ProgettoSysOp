@@ -87,6 +87,8 @@ int main(int argc, char **argv) {
         
         fprintf(fp, "\n");
     }
+
+    run_server(server_name);
     
     return 0;
 }

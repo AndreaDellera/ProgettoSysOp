@@ -67,47 +67,15 @@ int main(int argc, char **argv) {
         }
     }
 
-    char *commandClient = malloc(sizeof(char)*2048);
-    char *commandServer = malloc(sizeof(char)*2048);
-
-    /*COMPONGO COMANDO PER IL CLIENT*/
+    /*COMPONGO NOME CLIENT*/
     char *client_name = malloc(sizeof(char)*32);
     sprintf(client_name,"client%d",getpid());
     
     printf("client name = %s\n", client_name);
     printf("azione: %s\n", action);
-
-    if(server_name != NULL) {
-        strcat(commandClient, "client -s ");
-        strcat(commandClient, server_name);
-
-        if(key != NULL){
-            strcat(commandClient, " -k ");
-            strcat(commandClient, key);
-        }
-
-        if(client_name != NULL){
-            strcat(commandClient, " -n ");
-            strcat(commandClient, client_name);
-        }
-
-        if(action[0] == '0'){
-            strcat(commandClient, " -e");
-        } else if (action[0] == '1') {
-            strcat(commandClient, " -d");
-        }  
-    }
-
-
-    printf("comando client: %s\n\n", commandClient);
-
-    /*COMPONGO COMANDO PER IL SERVER*/    
-    sprintf(commandServer,"server -n %s",server_name);
-    printf("comando server: %s\n", commandServer);
     
     /*AVVIO CLIENT E SERVER CON I PARAMETRI DATI*/
-    //system(client_cmd);
-    //system(server_cmd);
+    run_client(server_name, client_name, key, file, msg, action, output);
 
     return 0;
 }

@@ -14,7 +14,7 @@ Anno accademico 2013/2014
 #include "functions.h"
 
 
-int main(int argc, char **argv) {//questa roba diventa una funzione che viene chiamata da codecserver, che prende in input i dati e mi 
+int main(int argc, char **argv) {//DEPRECATED!!!! Questa roba diventa una funzione che viene chiamata da codecserver, che prende in input i dati e mi 
                                 //risparmio un altro parsing inutile e una chiamata a system
     /*
     Il server usa, per fare il suo lavoro:
