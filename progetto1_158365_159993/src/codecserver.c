@@ -59,10 +59,9 @@ int main(int argc, char **argv) {
     //##### Senza l'attributo -n non va creato nessuno server!!    
     FILE *fp;
     fp = fopen("lista_server.txt", "a+");
-    char *toWrite = malloc(sizeof(char)*2048);
     if(server_name != NULL){
         fprintf(fp,"%s ",server_name);
-        
+
         if(maxtext != NULL){
             fprintf(fp,"%s ",maxtext);
         } else {
@@ -76,20 +75,20 @@ int main(int argc, char **argv) {
         if(minvalue != NULL){
             fprintf(fp, "%s ", minvalue);
         } else {
-            fprintf(fp,"?");
+            fprintf(fp,"? ");
         }
 
         if(maxvalue != NULL){
             fprintf(fp, "%s ",maxvalue);
         } else {
-            fprintf(fp,"?");
+            fprintf(fp,"? ");
         }
         
         fprintf(fp, "\n");
     }
 
     /*AVVIO SERVER CON I PARAMETRI DATI*/
-    run_server(server_name);
+    //run_server(server_name);
     
     return 0;
 }

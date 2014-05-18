@@ -71,9 +71,6 @@ int main(int argc, char **argv) {
     char *client_name = malloc(sizeof(char)*32);
     sprintf(client_name,"client%d",getpid());
     
-    printf("client name = %s\n", client_name);
-    printf("azione: %s\n", action);
-    
     /*AVVIO CLIENT CON I PARAMETRI DATI*/
     run_client(server_name, client_name, key, file, msg, action, output);
 

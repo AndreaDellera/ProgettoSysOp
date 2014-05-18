@@ -157,8 +157,6 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
             for(i = 0; i < 3; i++)
                 fscanf(pf, "%s", tmp_server_name);
         }
-        
-        //k = getopt (argc, argv, options);
     }
     
     if (pf == NULL){
@@ -251,7 +249,6 @@ void run_server(char* server_name){
             for(i = 0; i < 3; i++)
                 fscanf(pf, "%s", tmp_server_name);
         }
-        //k = getopt (argc, argv, options);
     }
     
     if (pf == NULL){
