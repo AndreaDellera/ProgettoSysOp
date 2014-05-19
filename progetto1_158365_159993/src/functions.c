@@ -180,7 +180,7 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
     write(fifo_server, action, sizeof(char));
     write(fifo_server, "****", 4 * sizeof(char));
 
-    fifo_client = open(client_name,O_RDONLY);//apre fifo client e si mette in ascolto per una risposta da parte del server
+    fifo_client = open(client_name, O_RDONLY);//apre fifo client e si mette in ascolto per una risposta da parte del server
     if(fifo_client < 0) {
         printf("Error in opening file");
         exit(-1);
@@ -225,6 +225,7 @@ void run_server(char* server_name){
             fscanf(pf, "%s", tmp);
             if(strcmp(tmp, "?") != 0){
                 maxtext = atoi(tmp);
+                printf("::%d\n",maxtext);
             }else{
                 maxtext = 100000;
             }
@@ -257,24 +258,30 @@ void run_server(char* server_name){
     }
     
     /*COMUNICAZIONE TRA SERVER E CLIENT*/
-    fifo_server = open(server_name,O_RDONLY);//apre fifo server in read per ricevere i parametri dal client
+    fifo_server = open(server_name, O_RDONLY);//apre fifo server in read per ricevere i parametri dal client
     if(fifo_server < 1){
         printf("Errore apertura fifo_server");
         exit(1);
     }
 
     //legge dalla fifo_server il nome del client
-    buf = malloc(256*sizeof(char));
+    buf = malloc(32*sizeof(char));
     read(fifo_server,buf,strlen(msg));
     client_name = buf;
 
+    char *terminatore= malloc(4*sizeof(char)); //dopo i parametri invio sempre '****'
+    read(fifo_server, terminatore, 4*sizeof(char));
+    if(strcmp(terminatore, "****") > 0){//controllo del terminatore per vedere che non ci siano messaggi/chiavi più lunghe del massimo consentito
+        printf("messaggio troppo lungo\n");
+        exit(1);
+    }
+
     /*CONTROLLI DA ESEGUIRE SUI PARAMENTRI*/
-    char *terminatore= malloc(4*sizeof(char)); //dopo i parametri invio sempre '****' che
     msg = malloc(maxtext * sizeof(char));
     read(fifo_server, msg, maxtext * sizeof(char));//lettura messaggio
 
     read(fifo_server, terminatore, 4*sizeof(char));
-    if(strcmp(terminatore, "****") > 0){//controllo del terminatore per vedere che non ci siano messaggi/chiavi più lunghe del massimo consentito
+    if(strcmp(terminatore, "****") > 0){
         printf("messaggio troppo lungo\n");
         exit(1);
     }

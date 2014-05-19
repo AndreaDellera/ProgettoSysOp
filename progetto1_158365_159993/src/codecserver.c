@@ -87,8 +87,9 @@ int main(int argc, char **argv) {
         fprintf(fp, "\n");
     }
 
+    sleep(2);
     /*AVVIO SERVER CON I PARAMETRI DATI*/
-    //run_server(server_name);
+    run_server(server_name);
     
     return 0;
 }
