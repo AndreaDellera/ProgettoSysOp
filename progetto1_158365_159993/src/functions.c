@@ -102,7 +102,7 @@ int create_fifo(char* name){
     return mkfifo(name, 0666); //0666 dà permessi in lettura e scrittura alla fifo a tutti gli utenti
 }
 
-void run_client(char* server_name, char* client_name, char* key, int file, char* msg, char *action, char* output){
+void run_client(char* server_name, char* client_name, char* key, char* input, char* msg, char *action, char* output){
     int fifo_server;// va dal client al server
     int fifo_client;// va dal server al client
     char *buf;
@@ -157,9 +157,7 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
             for(i = 0; i < 3; i++)
                 fscanf(pf, "%s", tmp_server_name);
         }
-        
-        //k = getopt (argc, argv, options);
-    }
+}
     
     if (pf == NULL){
         printf("server non presente\n");
@@ -220,7 +218,6 @@ void run_server(char* server_name){
         printf("lista server vuota\n");
         exit(1);
     }
-
     while(feof(pf) == 0){
         fscanf(pf, "%s", tmp_server_name);
         if(strcmp(server_name, tmp_server_name) == 0){ //stringhe uguali
@@ -251,9 +248,7 @@ void run_server(char* server_name){
             for(i = 0; i < 3; i++)
                 fscanf(pf, "%s", tmp_server_name);
         }
-        //k = getopt (argc, argv, options);
     }
-    
     if (pf == NULL){
         printf("server non presente\n");
         exit(1);
