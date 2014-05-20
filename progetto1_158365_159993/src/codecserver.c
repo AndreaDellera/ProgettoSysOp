@@ -86,10 +86,10 @@ int main(int argc, char **argv) {
         
         fprintf(fp, "\n");
     }
+    fclose(fp);
 
-    sleep(2);
     /*AVVIO SERVER CON I PARAMETRI DATI*/
-    run_server(server_name);
+    run_server(server_name, atoi(maxtext), atoi(minvalue), atoi(maxvalue));
     
     return 0;
 }

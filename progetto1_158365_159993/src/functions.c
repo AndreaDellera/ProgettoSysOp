@@ -127,6 +127,8 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
         exit(1);
     }
 
+    printf("11111\n");
+
     while(feof(pf) == 0){
         fscanf(pf, "%s", tmp_server_name);
         if(strcmp(server_name, tmp_server_name) == 0){ //stringhe uguali
@@ -164,6 +166,8 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
         exit(1);
     }
 
+    printf("22222\n");
+
     /*COMUNICAZIONE TRA SERVER E CLIENT*/
     fifo_server = open(server_name, O_WRONLY);//open fifo server in r/w
     if(fifo_server < 0) {
@@ -197,7 +201,7 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
     unlink(client_name);//elimina fifo client
 }
 
-void run_server(char* server_name){
+void run_server(char* server_name, int maxtext, int minvalue, int maxvalue){
     int fifo_server, fifo_client;
     char *nvalue = NULL;
     char *buf = NULL;
@@ -205,9 +209,11 @@ void run_server(char* server_name){
     char *msg = NULL;
     char *client_name = NULL;
     int action;
+    /*
     int minvalue = -1;
     int maxvalue = -1;
     int maxtext = -1;
+    */
 
     /*CONTROLLO DEI PARAMETRI DEL SERVER DAL FILE CON IL LOG DEI SERVER CREATI*/
     FILE *pf;
@@ -219,7 +225,7 @@ void run_server(char* server_name){
         exit(1);
     }
 
-    while(feof(pf) == 0){
+    /*while(feof(pf) == 0){
         fscanf(pf, "%s", tmp_server_name);
         if(strcmp(server_name, tmp_server_name) == 0){ //stringhe uguali
             fscanf(pf, "%s", tmp);
@@ -256,6 +262,7 @@ void run_server(char* server_name){
         printf("server non presente\n");
         exit(1);
     }
+    */
     
     /*COMUNICAZIONE TRA SERVER E CLIENT*/
     fifo_server = open(server_name, O_RDONLY);//apre fifo server in read per ricevere i parametri dal client
@@ -329,7 +336,7 @@ void run_server(char* server_name){
     
     //invia il messaggio al client
     write(fifo_client, msg, maxtext);
-    printf("\n Data sent to client \n");
+    printf("\n Data sent back to client \n");
 
     /*CHIUSURA CANALE DI COMUNICAZIONE*/
     close(fifo_server);
