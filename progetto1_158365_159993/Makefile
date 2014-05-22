@@ -15,7 +15,7 @@ all:
 	@echo "\t- \033[1massets\033[0m: genera dei possibili file di input (di prova) dentro “assets”"
 	@echo "\t- \033[1mtest\033[0m: genera i binari e gli assets e si lancia l’eseguibile per provare i file di input generati"
 	@echo "\t- \033[1mclean\033[0m: elimina eventuali file temporanei, compresi binari e assets generati"
-	@echo "\t- \033[1mtestAssets\033[0m: "
+	@echo "\t- \033[1mtestAssets\033[0m: questo target permette di testare il programma con degli input di prova generati dal target assets"
 	@echo "\n"
 bin: clean
 	mkdir bin

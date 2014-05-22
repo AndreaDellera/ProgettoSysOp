@@ -1,0 +1,35 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\begin{document}
+\author{Bortoli Gianluca - matricola 159993\\Dellera Andrea - matricola 158365}
+\title{Relazione Progetto 1 - Sistemi Operativi 2013/14}
+\maketitle
+\pagebreak
+
+\section{Prefazione}
+Il progetto che abbiamo scelto consiste principalmente in un client ed un server che comunicano tra loro, scambiandosi dei messaggi attraverso delle FIFO. Server e client sono due (o più) processi ben separati e senza alcun antenato in comune; abbiamo perciò scelto di utilizzare delle \emph{FIFO} (dette anche \emph{named pipe}), invece che delle semplici pipe, per non essere vincolati dal legame di "parentela" tra i processi necessari per poter usare le seconde.\\
+Presentiamo ora, separatamente, le funzionalità che abbiamo attribuito alle due entità.
+
+\section{Client}
+Il processo \emph{client} si occupa, come in una generica architettura client-server, di interrogare un altro processo detto server. Il client si limita quindi ad inoltrare richieste al server, il quale risponderà dopo aver eseguito le operazioni richieste.\\
+Abbiamo deciso di delegare a questo processo l'incombenza di prendere in input da riga di comando, usando l'apposita funzione getopt, i seguenti parametri:
+\begin{enumerate}
+\item nome del server a cui collegarsi (-n)
+\item chiave da utilizzare per la de/codifica (-k)
+\item un flag nel caso in cui si voglia prendere input da file (-f; esclude il passaggio del messaggio direttamente dalla linea di comando)
+\item due flag per indicare se voglio de/codificare (-d e -e rispettivamente)
+\item nome del file dove, eventualmente, scrivere l'output (-o)
+\end{enumerate}
+Una volta eseguito il parsing dei parametri da linea di comando, generiamo un nome sempre diverso per ogni client che viene lasciato, in modo da non aver conflitti con i nomi delle FIFO su cui poi i processi vanno a leggere/scrivere.\\
+Per risolvere ciò, abbiamo deciso di concatenare al termine glient il \emph{pid} corrispondente (es: "client12345").\\
+Infine, la chiamata alla funzione \emph{run\_client} con i parametri corretti. Parleremo più approfonditamente delle funzioni particolari implementate, quando tratteremo la libreria \emph{function.h} che abbiamo appositamente creato.
+
+\section{Server}
+Il processo \emph{server} gestisce le richieste inviate dal client ed offre essenzialmente il servizio di de/codifica di messaggi scelti dal client.\\
+Esso gestisce in modo autonomo tutti gli errori durante il parsing dei parametri da linea di comando, durante la creazione/apertura delle FIFO e per l'eventuale lettura del messaggio da un file esterno.\\
+La chiamata alla funzione \emph{run\_server} è stata messa all'interno di un ciclo infinito per far sì che il server rimanga in ascolto finchè non venga terminato volontariamente dall'utente, oppure avvenga un errore per il quale non può continuare.\\
+Alla fine, viene eliminata la FIFO relativa al server con quel nome specifico per permettere l'eventuale creazione di un'altro server con un nome usato in passato.
+
+\end{document}

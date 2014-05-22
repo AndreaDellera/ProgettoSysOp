@@ -273,8 +273,6 @@ void run_server(char* client_name, char* server_name, int maxtext, int minvalue,
     write(fifo_client, msg, maxtext);
     printf("***Data sent back to client***\n");
 
-    
-    
     /*CHIUSURA CANALE DI COMUNICAZIONE*/
     close(fifo_server);
     close(fifo_client);
