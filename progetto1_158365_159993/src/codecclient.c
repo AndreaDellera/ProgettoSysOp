@@ -23,9 +23,12 @@ int main(int argc, char **argv) {
     char *msg = NULL;
     char *action = malloc(sizeof(char)*2);//il carattere \0 va considerato; per quello *2
     char *output = malloc(256*sizeof(char));
+<<<<<<< HEAD
     int show_all_messages = 0;
     int index = -1;
     //output = "no_output";
+=======
+>>>>>>> 896029ac554a284c1e5d19f334282bc06efed7c5
     
     int k;
     
@@ -58,7 +61,6 @@ int main(int argc, char **argv) {
                 
                 msg = malloc(100000*sizeof(char));
                 fscanf(pf, "%s", msg);
-                free(nome_file);
                 break;
                 
             case 'm'://messaggio
@@ -96,6 +98,7 @@ int main(int argc, char **argv) {
     /*COMPONGO NOME CLIENT*/
     char *client_name = malloc(sizeof(char)*32);
     sprintf(client_name,"client%d",getpid());
+<<<<<<< HEAD
     if(show_all_messages){
         char *nome_file = malloc(256*sizeof(char));
         nome_file = "server_";
@@ -122,5 +125,10 @@ int main(int argc, char **argv) {
     free(output);
     free(client_name);
     free(msg);
+=======
+    
+    /*AVVIO CLIENT CON I PARAMETRI DATI*/
+    run_client(server_name, client_name, key, file, msg, action, output);
+>>>>>>> 896029ac554a284c1e5d19f334282bc06efed7c5
     return 0;
 }

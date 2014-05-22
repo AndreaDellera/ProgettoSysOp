@@ -29,11 +29,6 @@ int main(int argc, char **argv) {
         switch (k) {
             case 'n'://nome server
                 server_name = optarg;
-                /*file = create_fifo(argv[optind-1]); //creo una fifo con il nome passato con argomento -n
-                if(file < 0) {//error handling
-                    printf("impossibile creare una fifo per il server %s\n", server_name);
-                    exit(-1);
-                }*/
                 break;
                 
             case 't'://max text
@@ -106,14 +101,15 @@ int main(int argc, char **argv) {
         char *client_name = malloc(256*sizeof(char));
         read(fifo_server, client_name, 256*sizeof(char));
         
-        if(strcmp(client_name,"parametri_invalidi") != 0){
+        if(client_name != NULL){
             printf("client: %s\n", client_name);
             run_server(client_name, server_name, atoi(maxtext), atoi(minvalue), atoi(maxvalue));
             read(fifo_server, client_name, 256*sizeof(char));
         }
+        free(client_name);
         close(server_name);
     }
-    free(client_name);
+    
     unlink(server_name);
 
     return 0;
