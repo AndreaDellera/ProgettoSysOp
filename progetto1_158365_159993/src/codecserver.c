@@ -105,9 +105,12 @@ int main(int argc, char **argv) {
         //legge dalla fifo_server il nome del client
         char *client_name = malloc(256*sizeof(char));
         read(fifo_server, client_name, 256*sizeof(char));
-        printf("client: %s\n", client_name);
-        run_server(client_name, server_name, atoi(maxtext), atoi(minvalue), atoi(maxvalue));
-        read(fifo_server, client_name, 256*sizeof(char));
+        
+        if(strcmp(client_name,"parametri_invalidi") != 0){
+            printf("client: %s\n", client_name);
+            run_server(client_name, server_name, atoi(maxtext), atoi(minvalue), atoi(maxvalue));
+            read(fifo_server, client_name, 256*sizeof(char));
+        }
         close(server_name);
     }
 

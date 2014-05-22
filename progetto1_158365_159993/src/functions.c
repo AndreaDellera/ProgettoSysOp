@@ -110,12 +110,6 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
 
     int maxtext, minvalue, maxvalue;
 
-    /*CREO LA FIFO DEL CLIENT*/
-    file_cl = create_fifo(client_name);
-    if(file_cl < 0){
-        printf("impossibile creare fifo per il client %s\n", client_name);
-        exit(-1);
-    }
 
     /*CONTROLLO DEI PARAMETRI DEL SERVER (min e max chiave e lunghezza massima testo)*/
     FILE *pf;
@@ -165,6 +159,18 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
         printf("server non presente\n");
         exit(1);
     }
+    
+    /*Controllo la validità dei parametri prima di scrivere ognuno nella fifo*/
+    if(strlen(msg) > maxtext){
+        printf("messaggio troppo lungo\n");
+        write(fifo_server,"parametri_invalidi",256*sizeof(char));
+        exit(1);
+    }
+    if(strlen(key) > maxvalue || strlen(key) < minvalue){
+        printf("lunghezza chiave errata\n");
+        write(fifo_server,"parametri_invalidi",256*sizeof(char));
+        exit(1);
+    }
 
     /*COMUNICAZIONE TRA SERVER E CLIENT*/
     fifo_server = open(server_name, O_WRONLY);//open fifo server in r/w
@@ -172,15 +178,12 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
         printf("Error in opening file\n");
         exit(-1);
     }
-    
-    /*Controllo la validità dei parametri prima di scrivere ognuno nella fifo*/
-    if(strlen(msg) > maxtext){
-        printf("messaggio troppo lungo\n");
-        exit(1);
-    }
-    if(strlen(key) > maxvalue || strlen(key) < minvalue){
-        printf("lunghezza chiave errata\n");
-        exit(1);
+
+    /*CREO LA FIFO DEL CLIENT*/
+    file_cl = create_fifo(client_name);
+    if(file_cl < 0){
+        printf("impossibile creare fifo per il client %s\n", client_name);
+        exit(-1);
     }
 
     write(fifo_server, client_name, 256*sizeof(char));//scrive il nome della fifo dove il server andrà a scrivere
