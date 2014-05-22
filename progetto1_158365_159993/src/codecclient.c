@@ -23,11 +23,13 @@ int main(int argc, char **argv) {
     char *msg = NULL;
     char *action = malloc(sizeof(char)*2);//il carattere \0 va considerato; per quello *2
     char *output = malloc(256*sizeof(char));
+    int show_all_messages = 0;
+    int index = -1;
     //output = "no_output";
     
     int k;
     
-    char *options = "n:k:f:m:edo:";
+    char *options = "n:k:f:m:edo:si:";
     opterr = 0;
     
     while ((k = getopt (argc, argv, options)) != -1) {
@@ -47,7 +49,6 @@ int main(int argc, char **argv) {
 
                 char *nome_file = malloc(256*sizeof(char));
                 nome_file = optarg;
-                printf("nome file: %s\n", nome_file);
                 FILE *pf;
                 pf = fopen(nome_file, "r");
                 if(pf == NULL){
@@ -64,16 +65,24 @@ int main(int argc, char **argv) {
                 msg = optarg;
                 break;
 
-            case 'e':
+            case 'e'://encode
                 sprintf(action,"%c",'0');
                 break;
 
-            case 'd':
+            case 'd'://decode
                 sprintf(action,"%c",'1');
                 break;
                 
             case 'o'://file output dove scrivere il messaggio una volta de/criptato
                 output = optarg;
+                break;
+            
+            case 's'://show all messages stored in the server
+                show_all_messages = 1;
+                break;
+            
+            case 'i': //decode the i-esimo message
+                index = atoi(optarg);
                 break;
                 
             case '?'://caso in cui non riconosco nessuno dei caratteri
@@ -87,9 +96,28 @@ int main(int argc, char **argv) {
     /*COMPONGO NOME CLIENT*/
     char *client_name = malloc(sizeof(char)*32);
     sprintf(client_name,"client%d",getpid());
-    
-    /*AVVIO CLIENT CON I PARAMETRI DATI*/
-    run_client(server_name, client_name, key, file, msg, action, output);
+    if(show_all_messages){
+        char *nome_file = malloc(256*sizeof(char));
+        nome_file = "server_";
+        strcat(nome_file, server_name);
+        strcat(nome_file, ".txt");
+        FILE *pf;
+        pf = fopen(nome_file, "r");
+        if(pf == NULL){
+            printf("file di input non trovato\n");
+            exit(1);
+        }
+        int i = 0;
+        while(!eof(pf)){
+            char *m = malloc(100000*sizeof(char));
+            fscanf(pf, "%s", m);
+            printf("%d: %s\n",i++, m);
+            free(nome_file);
+        }
+    }else{s
+        /*AVVIO CLIENT CON I PARAMETRI DATI*/
+        run_client(server_name, client_name, key, file, msg, action, output);
+    }
     free(action);
     free(output);
     free(client_name);
