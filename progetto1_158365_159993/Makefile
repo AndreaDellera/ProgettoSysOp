@@ -54,7 +54,7 @@ assets: clean bin
 	mv assets2.txt ./assets
 	@echo "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"
 
-testAssets: bin 
+testAssets: assets 
 	cd bin && ./codecserver -n testServer -m 1 -M 15 -t 100 &
 	cd bin && ./codecclient -n testServer -k ciao -f assets1.txt -e -o assets1_encoded.txt
 	cd bin && ./codecclient -n testServer -k ciao -f assets2.txt -e -o assets2_encoded.txt
