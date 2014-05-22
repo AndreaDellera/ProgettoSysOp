@@ -98,6 +98,6 @@ int main(int argc, char **argv) {
         run_server(server_name, atoi(maxtext), atoi(minvalue), atoi(maxvalue));
         unlink(server_name);
     }
-    
+
     return 0;
 }

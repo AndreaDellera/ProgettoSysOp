@@ -167,23 +167,26 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
     }
 
     /*COMUNICAZIONE TRA SERVER E CLIENT*/
-    fifo_server = open(server_name, O_RDWR);//open fifo server in r/w
+    fifo_server = open(server_name, O_WRONLY);//open fifo server in r/w
     if(fifo_server < 0) {
         printf("Error in opening file");
         exit(-1);
     }
     
-    //////////////////////////////////////////////////////////
-    //TODO: controllare ciò che scrivo nella fifo prima di scrivere
-    //////////////////////////////////////////////////////////
+    /*Controllo la validità dei parametri prima di scrivere ognuno nella fifo*/
+    if(strlen(msg) > maxtext){
+        printf("messaggio troppo lungo\n");
+        exit(1);
+    }
+    if(strlen(key) > maxvalue || strlen(key) < minvalue){
+        printf("lunghezza chiave errata\n");
+        exit(1);
+    }
+
     write(fifo_server, client_name, 256*sizeof(char));//scrive il nome della fifo dove il server andrà a scrivere
-    write(fifo_server, "****", 4 * sizeof(char));    
-    write(fifo_server, msg, maxtext * sizeof(char));//writes msg in fifo server    
-    write(fifo_server, "****", 4 * sizeof(char));//carattere separatore    
+    write(fifo_server, msg, maxtext * sizeof(char));//writes msg in fifo server      
     write(fifo_server, key, maxvalue * sizeof(char));    
-    write(fifo_server, "****", 4 * sizeof(char));    
     write(fifo_server, action, sizeof(char));    
-    write(fifo_server, "****", 4 * sizeof(char));
 
     printf("***End write from client to server***\n");
 
@@ -213,17 +216,6 @@ void run_server(char* server_name, int maxtext, int minvalue, int maxvalue){
     char *client_name = NULL;
     char *terminatore = NULL;
     int action;
-
-    /*CONTROLLO DEI PARAMETRI DEL SERVER DAL FILE CON IL LOG DEI SERVER CREATI*/
-    FILE *pf;
-    char * tmp_server_name = NULL;
-    char *tmp = NULL;
-    pf = fopen("lista_server.txt", "r");
-    if (pf == NULL){
-        printf("lista server vuota\n");
-        unlink(server_name);
-        exit(1);
-    }
     
     /*COMUNICAZIONE TRA SERVER E CLIENT*/
     fifo_server = open(server_name, O_RDONLY);//apre fifo server in read per ricevere i parametri dal client
@@ -238,51 +230,21 @@ void run_server(char* server_name, int maxtext, int minvalue, int maxvalue){
     read(fifo_server, client_name, 256*sizeof(char));
 
     terminatore = malloc(4*sizeof(char)); //dopo i parametri invio sempre '****'
-    read(fifo_server, terminatore, 4*sizeof(char));
-    if(strcmp(terminatore, "****") > 0){//controllo del terminatore per vedere che non ci siano messaggi/chiavi più lunghe del massimo consentito
-        printf("messaggio troppo lungo\n");
-        unlink(server_name);
-        exit(1);
-    }
 
     /*CONTROLLI DA ESEGUIRE SUI PARAMENTRI*/
     msg = malloc(maxtext * sizeof(char));
     read(fifo_server, msg, maxtext * sizeof(char));//lettura messaggio
-
-    read(fifo_server, terminatore, 4*sizeof(char));
-    if(strcmp(terminatore, "****") > 0){
-        printf("messaggio troppo lungo\n");
-        unlink(server_name);
-        exit(1);
-    }
+    printf("--%s\n", msg);
     
     //lettura chiave
     key = malloc(maxvalue * sizeof(char));
     read(fifo_server, key, maxvalue * sizeof(char));
-
-    if(strlen(key) < minvalue){
-        printf("lunghezza chiave troppo piccola\n");
-        unlink(server_name);
-        exit(1);
-    }
-    read(fifo_server, terminatore, 4*sizeof(char));
-    if(strcmp(terminatore, "****") > 0){
-        printf("chiave troppo lunga");
-        unlink(server_name);
-        exit(1);
-    }
+    printf("--%s\n", key);
 
     //lettura azione da fare (de/codifica)
     char *action_buff = malloc(2*sizeof(char));
     read(fifo_server, action_buff, sizeof(char));
     action = atoi(action_buff);
-    
-    read(fifo_server, terminatore, 4*sizeof(char));
-    if(strcmp(terminatore, "****") > 0){
-        printf("chiave troppo lunga");
-        unlink(server_name);
-        exit(1);
-    }
     
     printf("***Msg read in fifo_server***\n");
     
@@ -297,7 +259,7 @@ void run_server(char* server_name, int maxtext, int minvalue, int maxvalue){
     //scrittura le messaggio de/criptato al client per rispondergli
     fifo_client = open(client_name, O_WRONLY);
     if(fifo_client < 1) {
-        printf("Errore apertura fifo_client");
+        printf("Errore apertura fifo_client\n");
         exit(2);
     }
     
