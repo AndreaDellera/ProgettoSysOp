@@ -169,7 +169,7 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
     /*COMUNICAZIONE TRA SERVER E CLIENT*/
     fifo_server = open(server_name, O_WRONLY);//open fifo server in r/w
     if(fifo_server < 0) {
-        printf("Error in opening file");
+        printf("Error in opening file\n");
         exit(-1);
     }
     
@@ -201,19 +201,27 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
     msg = buf;
     printf("***Reply from server is: %s***\n",msg);
 
+    FILE *out;
+    if(output != NULL){
+        out = fopen(output, "a+");
+        fprintf(out, "%s\n", msg);
+    }else{
+        printf("***Reply from server is: %s***\n",msg);
+    }
+
     /*CHIUSURA CANALE DI COMUNICAZIONE*/
     close(fifo_server);//chiude le fifo
     close(fifo_client);
     unlink(client_name);//elimina fifo client
 }
 
-void run_server(char* server_name, int maxtext, int minvalue, int maxvalue){
+void run_server(char* client_name, char* server_name, int maxtext, int minvalue, int maxvalue){
     int fifo_server, fifo_client;
     char *nvalue = NULL;
     char *buf = NULL;
     char *key = NULL;
     char *msg = NULL;
-    char *client_name = NULL;
+    //char *client_name = NULL;
     char *terminatore = NULL;
     int action;
     
@@ -226,10 +234,8 @@ void run_server(char* server_name, int maxtext, int minvalue, int maxvalue){
     }
 
     //legge dalla fifo_server il nome del client
-    client_name = malloc(256*sizeof(char));
-    read(fifo_server, client_name, 256*sizeof(char));
-
-    terminatore = malloc(4*sizeof(char)); //dopo i parametri invio sempre '****'
+    //client_name = malloc(256*sizeof(char));
+    //read(fifo_server, client_name, 256*sizeof(char));
 
     /*CONTROLLI DA ESEGUIRE SUI PARAMENTRI*/
     msg = malloc(maxtext * sizeof(char));

@@ -88,16 +88,30 @@ int main(int argc, char **argv) {
     }
     fclose(fp);
 
-    /*AVVIO SERVER CON I PARAMETRI DATI*/
-    while(1){
-        file = create_fifo(server_name); //creo una fifo con il nome passato con argomento -n
-        if(file < 0) {//error handling
-            printf("impossibile creare una fifo per il server %s\n", server_name);
-            exit(-1);
-        }
-        run_server(server_name, atoi(maxtext), atoi(minvalue), atoi(maxvalue));
-        unlink(server_name);
+    /*CREO LA FIFO DEL SERVER E AVVIO SERVER CON I PARAMETRI DATI*/
+    file = create_fifo(server_name); //creo una fifo con il nome passato con argomento -n
+    if(file < 0) {//error handling
+        printf("impossibile creare una fifo per il server %s\n", server_name);
+        exit(-1);
     }
+
+    while(1){
+        int fifo_server = open(server_name, O_RDONLY);//apre fifo server in read per ricevere i parametri dal client
+        if(fifo_server < 1){
+            printf("Errore apertura fifo_server\n");
+            unlink(server_name);
+            exit(1);
+        }
+        //legge dalla fifo_server il nome del client
+        char *client_name = malloc(256*sizeof(char));
+        read(fifo_server, client_name, 256*sizeof(char));
+        printf("client: %s\n", client_name);
+        run_server(client_name, server_name, atoi(maxtext), atoi(minvalue), atoi(maxvalue));
+        read(fifo_server, client_name, 256*sizeof(char));
+        close(server_name);
+    }
+
+    unlink(server_name);
 
     return 0;
 }

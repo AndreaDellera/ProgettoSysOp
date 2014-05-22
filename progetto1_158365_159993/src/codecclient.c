@@ -22,11 +22,12 @@ int main(int argc, char **argv) {
     int file = 0;
     char *msg = NULL;
     char *action = malloc(sizeof(char)*2);//il carattere \0 va considerato; per quello *2
-    char *output = NULL;
+    char *output = malloc(256*sizeof(char));
+    //output = "no_output";
     
     int k;
     
-    char *options = "n:k:fm:edo:";
+    char *options = "n:k:f:m:edo:";
     opterr = 0;
     
     while ((k = getopt (argc, argv, options)) != -1) {
@@ -40,7 +41,22 @@ int main(int argc, char **argv) {
                 break;
                 
             case 'f'://flag per prendere il messaggio da un file
-                file = 1;//TODO: file da input
+                //si suppone che il file di testo da cui leggere il messaggio in input venga creato
+                //appositamente all'interno della cartella /bin che viene generata dopo ogni compilazione
+                file = 1;
+
+                char *nome_file = malloc(256*sizeof(char));
+                nome_file = optarg;
+                printf("nome file: %s\n", nome_file);
+                FILE *pf;
+                pf = fopen(nome_file, "r");
+                if(pf == NULL){
+                    printf("file di input non trovato\n");
+                    exit(1);
+                }
+
+                msg = malloc(100000*sizeof(char));
+                fscanf(pf, "%s", msg);
                 break;
                 
             case 'm'://messaggio
@@ -60,7 +76,7 @@ int main(int argc, char **argv) {
                 break;
                 
             case '?'://caso in cui non riconosco nessuno dei caratteri
-                printf("c'è qualcosa che non va\n");
+                printf("c'è qualcosa che non va o_O\n");
 
             default:
                 abort();
