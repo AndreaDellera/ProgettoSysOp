@@ -46,9 +46,11 @@ assets:
 	#“assets” (cioè se il progetto può lavorare su dei file di input, questa direttiva ne 
 	#genera un set utilizzabile)  
 
-test:
-	#con un target “test” (make test) si generano i binari e gli assets e si lancia 
-	#l’eseguibile utile a provare i file di input generati 
+test: clean bin
+	cd bin && ./codecserver -n testServer -m 1 -M 15 -t 100 &
+	cd bin && ./codecclient -n testServer -k ciao -m TestoDelMessaggio -e -o text_encoded.txt
+	cd bin && cat text_encoded.txt
+
 
 clean:
 	rm -rf ./bin/
