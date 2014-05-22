@@ -25,6 +25,7 @@ bin: clean
 	mv codecclient ./bin/
 	mv codecserver ./bin/
 	@echo "\tFiles copied succesfully in /bin/ !"
+	@echo "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"
 	@echo "\n"
 
 install: clear bin
@@ -32,6 +33,7 @@ install: clear bin
 	cp codecserver /usr/bin/
 	cp codecclient /usr/bin/
 	@echo "\tFiles copied succesfully in /usr/bin/ !"
+	@echo "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"
 	@echo "\n"
 
 uninstall:	
@@ -39,6 +41,7 @@ uninstall:
 	rm -rf /usr/bin/codecserver
 	rm -rf /usr/bin/codecclient
 	@echo "\tPrograms uninstalled succesfully !"
+	@echo "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"
 	@echo "\n"
 
 assets: clean bin 
@@ -49,6 +52,7 @@ assets: clean bin
 	cp assets2.txt ./bin
 	mv assets1.txt ./assets
 	mv assets2.txt ./assets
+	@echo "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"
 
 testAssets: bin 
 	cd bin && ./codecserver -n testServer -m 1 -M 15 -t 100 &
@@ -56,14 +60,17 @@ testAssets: bin
 	cd bin && ./codecclient -n testServer -k ciao -f assets2.txt -e -o assets2_encoded.txt
 	cd bin && cat assets1_encoded.txt
 	cd bin && cat assets2_encoded.txt
+	@echo "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"
 
 test: bin
 	cd bin && ./codecserver -n testServer -m 1 -M 15 -t 100 &
 	cd bin && ./codecclient -n testServer -k ciao -m TestoDelMessaggio -e -o text_encoded.txt
 	cd bin && cat text_encoded.txt
+	@echo "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"
 
 clean:
 	rm -rf ./bin/
 	rm -rf ./assets/ 
 	@echo "\tClean succesfully !"
+	@echo "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"
 	@echo "\n"

@@ -110,7 +110,6 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
 
     int maxtext, minvalue, maxvalue;
 
-
     /*CONTROLLO DEI PARAMETRI DEL SERVER (min e max chiave e lunghezza massima testo)*/
     FILE *pf;
     char *tmp_server_name = NULL;
@@ -224,8 +223,6 @@ void run_server(char* client_name, char* server_name, int maxtext, int minvalue,
     char *buf = NULL;
     char *key = NULL;
     char *msg = NULL;
-    //char *client_name = NULL;
-    char *terminatore = NULL;
     int action;
     
     /*COMUNICAZIONE TRA SERVER E CLIENT*/
@@ -239,12 +236,10 @@ void run_server(char* client_name, char* server_name, int maxtext, int minvalue,
     /*CONTROLLI DA ESEGUIRE SUI PARAMENTRI*/
     msg = malloc(maxtext * sizeof(char));
     read(fifo_server, msg, maxtext * sizeof(char));//lettura messaggio
-    printf("--%s\n", msg);
     
     //lettura chiave
     key = malloc(maxvalue * sizeof(char));
     read(fifo_server, key, maxvalue * sizeof(char));
-    printf("--%s\n", key);
 
     //lettura azione da fare (de/codifica)
     char *action_buff = malloc(2*sizeof(char));

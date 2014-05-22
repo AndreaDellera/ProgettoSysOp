@@ -1,4 +1,4 @@
-\documentclass[a4paper,10pt]{article}
+\documentclass[a4paper,9pt]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 
@@ -31,5 +31,23 @@ Il processo \emph{server} gestisce le richieste inviate dal client ed offre esse
 Esso gestisce in modo autonomo tutti gli errori durante il parsing dei parametri da linea di comando, durante la creazione/apertura delle FIFO e per l'eventuale lettura del messaggio da un file esterno.\\
 La chiamata alla funzione \emph{run\_server} è stata messa all'interno di un ciclo infinito per far sì che il server rimanga in ascolto finchè non venga terminato volontariamente dall'utente, oppure avvenga un errore per il quale non può continuare.\\
 Alla fine, viene eliminata la FIFO relativa al server con quel nome specifico per permettere l'eventuale creazione di un'altro server con un nome usato in passato.
+
+\section{Libreria "functions.h"}
+Abbiamo deciso di strutturare il codice creando una libreria \emph{functions.h} che contiene tutte le funzioni principali. Ciò ci permettere di non appesantire inutilmente i sorgenti del \emph{client} e del \emph{server} e li rende anche più leggibili.\\
+Le funzioni principali sono la \emph{cript} e la \emph{decript}, la \emph{run\_server} e la \emph{run\_client} di cui abbiamo accennato prima.
+\subsection{cript e decript}
+Queste due funzioni si occupano, rispettivamente, di criptare e decriptare i messaggi inviati dal client al server secondo le specifiche del progetto.
+\subsection{run\_server}
+Questo metodo si occupa di gestire l'intera parte del server. Apre le fifo necessarie nelle modalità corrette, alloca i parametri utilizzati.\\ 
+La \emph{run\_server} gestisce a tutti gli effetti l'intera comunicazione dal lato del server, facendo, quando serve, gli opportuni controlli prima di aprire le FIFO e/o file di configurazione.
+\subsection{run\_client}
+Questo metodo si occupa, al contrario, di gestire tutta la parte delegata al client, a partire dall'apertura delle FIFO, fino alla scrittura nella fifo per inviare ad un determinato client ciò che ha richiesto, leggendo i parametri necessari dal file di configurazione creato all'avvio di ogni server.
+
+\section{Il log dei server}
+Abbiamo deciso di tener traccia di tutti i server con i relativi parametri nel file \emph{lista\_server.txt}.\\ 
+Ciò ci permette una migliore e più semplice gestione dei parametri in input per le varie funzioni che li richiedono, ma, al contempo, di dare all'utente una panoramica migliore dei server attualmente in esecuzione.\\
+Nel caso in cui un utente, con molti server in esecuzione in background o come demoni ad esempio, voglia accedere ai loro servizi, ma non si ricorda semplicemente i nomi con cui accedervi, può semplicemente leggere il file di log.\\
+Questa scelta è stata dettata sia dalla comodità di avere un log dei server avviati, ma anche per permettere all'utente una visione d'insieme migliore.
+
 
 \end{document}
