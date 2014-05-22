@@ -1,0 +1,20 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\begin{document}
+\author{Bortoli Gianluca 159993\\Dellera Andrea 158365}
+\title{Relazione Progetto 1 - Sistemi Operativi 2013/14}
+\maketitle
+\pagebreak
+
+\section{Prefazione}
+Il progetto che abbiamo scelto consiste principalmente in un client ed un server che comunicano tra loro, scambiandosi dei messaggi attraverso delle FIFO. Server e client sono due (o più) processi ben separati e senza alcun antenato in comune; abbiamo perciò scelto di utilizzare delle \emph{FIFO} (dette anche \emph{named pipe}), invece che delle semplici pipe, per non essere vincolati dal legame di "parentela" tra i processi necessari per poter usare le seconde.\\
+Presentiamo ora, separatamente, le funzionalità che abbiamo attribuito alle due entità.
+
+\section{Client}
+Il processo \emph{client} si occupa, come in una generica architettura client-server, di interrogare un altro processo detto server. Il client si limita quindi ad inoltrare richieste al server, il quale risponderà dopo aver eseguito le operazioni richieste.\\
+Abbiamo deciso di delegare a questo processo l'incombenza di prendere in input da riga di comando, usando l'apposita funzione getopt, i seguenti parametri:
+
+
+\end{document}

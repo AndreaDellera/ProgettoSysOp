@@ -23,7 +23,6 @@ int main(int argc, char **argv) {
     char *msg = NULL;
     char *action = malloc(sizeof(char)*2);//il carattere \0 va considerato; per quello *2
     char *output = malloc(256*sizeof(char));
-    //output = "no_output";
     
     int k;
     
@@ -57,7 +56,6 @@ int main(int argc, char **argv) {
                 
                 msg = malloc(100000*sizeof(char));
                 fscanf(pf, "%s", msg);
-                free(nome_file);
                 break;
                 
             case 'm'://messaggio
@@ -90,9 +88,5 @@ int main(int argc, char **argv) {
     
     /*AVVIO CLIENT CON I PARAMETRI DATI*/
     run_client(server_name, client_name, key, file, msg, action, output);
-    free(action);
-    free(output);
-    free(client_name);
-    free(msg);
     return 0;
 }

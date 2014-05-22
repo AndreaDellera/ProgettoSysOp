@@ -15,6 +15,7 @@ all:
 	@echo "\t- \033[1massets\033[0m: genera dei possibili file di input (di prova) dentro “assets”"
 	@echo "\t- \033[1mtest\033[0m: genera i binari e gli assets e si lancia l’eseguibile per provare i file di input generati"
 	@echo "\t- \033[1mclean\033[0m: elimina eventuali file temporanei, compresi binari e assets generati"
+	@echo "\t- \033[1mtestAssets\033[0m: "
 	@echo "\n"
 bin: clean
 	mkdir bin
@@ -40,17 +41,26 @@ uninstall:
 	@echo "\tPrograms uninstalled succesfully !"
 	@echo "\n"
 
-assets:
-	#con un target “assets” (make assets) si devono poter generare dei possibili file di 
-	#input (di prova) dentro una cartella da crearsi automaticamente denominata 
-	#“assets” (cioè se il progetto può lavorare su dei file di input, questa direttiva ne 
-	#genera un set utilizzabile)  
+assets: clean bin 
+	mkdir assets
+	echo TestoDelMessaggio > assets1.txt
+	echo TestoDiProvaDiClientEDelServer > assets2.txt
+	cp assets1.txt ./bin
+	cp assets2.txt ./bin
+	mv assets1.txt ./assets
+	mv assets2.txt ./assets
 
-test: clean bin
+testAssets: bin 
+	cd bin && ./codecserver -n testServer -m 1 -M 15 -t 100 &
+	cd bin && ./codecclient -n testServer -k ciao -f assets1.txt -e -o assets1_encoded.txt
+	cd bin && ./codecclient -n testServer -k ciao -f assets2.txt -e -o assets2_encoded.txt
+	cd bin && cat assets1_encoded.txt
+	cd bin && cat assets2_encoded.txt
+
+test: bin
 	cd bin && ./codecserver -n testServer -m 1 -M 15 -t 100 &
 	cd bin && ./codecclient -n testServer -k ciao -m TestoDelMessaggio -e -o text_encoded.txt
 	cd bin && cat text_encoded.txt
-
 
 clean:
 	rm -rf ./bin/

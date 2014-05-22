@@ -111,9 +111,10 @@ int main(int argc, char **argv) {
             run_server(client_name, server_name, atoi(maxtext), atoi(minvalue), atoi(maxvalue));
             read(fifo_server, client_name, 256*sizeof(char));
         }
+        free(client_name);
         close(server_name);
     }
-    free(client_name);
+    
     unlink(server_name);
 
     return 0;
