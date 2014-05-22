@@ -113,7 +113,7 @@ int main(int argc, char **argv) {
         }
         close(server_name);
     }
-
+    free(client_name);
     unlink(server_name);
 
     return 0;
