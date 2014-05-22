@@ -154,6 +154,8 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
                 fscanf(pf, "%s", tmp_server_name);
         }
     }
+    free(tmp_server_name);
+    free(tmp);
     
     if (pf == NULL){
         printf("server non presente\n");
@@ -199,9 +201,7 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
         exit(-1);
     }
 
-    buf = malloc(maxtext * sizeof(char));
-    read(fifo_client, buf, maxtext);
-    msg = buf;
+    read(fifo_client, msg, maxtext);
     printf("***Reply from server is: %s***\n",msg);
 
     FILE *out;
@@ -236,10 +236,6 @@ void run_server(char* client_name, char* server_name, int maxtext, int minvalue,
         exit(1);
     }
 
-    //legge dalla fifo_server il nome del client
-    //client_name = malloc(256*sizeof(char));
-    //read(fifo_server, client_name, 256*sizeof(char));
-
     /*CONTROLLI DA ESEGUIRE SUI PARAMENTRI*/
     msg = malloc(maxtext * sizeof(char));
     read(fifo_server, msg, maxtext * sizeof(char));//lettura messaggio
@@ -254,6 +250,7 @@ void run_server(char* client_name, char* server_name, int maxtext, int minvalue,
     char *action_buff = malloc(2*sizeof(char));
     read(fifo_server, action_buff, sizeof(char));
     action = atoi(action_buff);
+    free(action_buff);
     
     printf("***Msg read in fifo_server***\n");
     
@@ -276,6 +273,8 @@ void run_server(char* client_name, char* server_name, int maxtext, int minvalue,
     write(fifo_client, msg, maxtext);
     printf("***Data sent back to client***\n");
 
+    
+    
     /*CHIUSURA CANALE DI COMUNICAZIONE*/
     close(fifo_server);
     close(fifo_client);

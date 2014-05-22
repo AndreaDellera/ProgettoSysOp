@@ -54,9 +54,10 @@ int main(int argc, char **argv) {
                     printf("file di input non trovato\n");
                     exit(1);
                 }
-
+                
                 msg = malloc(100000*sizeof(char));
                 fscanf(pf, "%s", msg);
+                free(nome_file);
                 break;
                 
             case 'm'://messaggio
@@ -89,6 +90,9 @@ int main(int argc, char **argv) {
     
     /*AVVIO CLIENT CON I PARAMETRI DATI*/
     run_client(server_name, client_name, key, file, msg, action, output);
-
+    free(action);
+    free(output);
+    free(client_name);
+    free(msg);
     return 0;
 }
