@@ -11,6 +11,7 @@ Anno accademico 2013/2014
 #include <stdlib.h>
 #include <getopt.h>
 #include <string.h>
+#include <unistd.h>
 #include "functions.h"
 
 int main(int argc, char **argv) {    
@@ -107,7 +108,7 @@ int main(int argc, char **argv) {
             read(fifo_server, client_name, 256*sizeof(char));
         }
         free(client_name);
-        close(server_name);
+        close(fifo_server);
     }
     
     unlink(server_name);

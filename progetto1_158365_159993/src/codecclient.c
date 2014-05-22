@@ -12,6 +12,7 @@ Anno accademico 2013/2014
 #include <string.h>
 #include <getopt.h>
 #include <unistd.h>
+#include <unistd.h>
 #include "functions.h"
 
 
@@ -23,15 +24,11 @@ int main(int argc, char **argv) {
     char *msg = NULL;
     char *action = malloc(sizeof(char)*2);//il carattere \0 va considerato; per quello *2
     char *output = malloc(256*sizeof(char));
-<<<<<<< HEAD
     int show_all_messages = 0;
     int index = -1;
-    //output = "no_output";
-=======
->>>>>>> 896029ac554a284c1e5d19f334282bc06efed7c5
-    
     int k;
-    
+    FILE *pf;
+ 
     char *options = "n:k:f:m:edo:si:";
     opterr = 0;
     
@@ -52,7 +49,6 @@ int main(int argc, char **argv) {
 
                 char *nome_file = malloc(256*sizeof(char));
                 nome_file = optarg;
-                FILE *pf;
                 pf = fopen(nome_file, "r");
                 if(pf == NULL){
                     printf("file di input non trovato\n");
@@ -61,6 +57,7 @@ int main(int argc, char **argv) {
                 
                 msg = malloc(100000*sizeof(char));
                 fscanf(pf, "%s", msg);
+                fclose(pf);
                 break;
                 
             case 'm'://messaggio
@@ -85,6 +82,24 @@ int main(int argc, char **argv) {
             
             case 'i': //decode the i-esimo message
                 index = atoi(optarg);
+                nome_file = malloc(256*sizeof(char));
+                nome_file = "server_";
+                strcat(nome_file, server_name);
+                strcat(nome_file, ".txt");
+                pf = fopen(nome_file, "r");
+                if(pf == NULL){
+                    printf("file di input non trovato\n");
+                    exit(1);
+                }
+                int i = 0;
+                while(i < index){
+                    char *m = malloc(100000*sizeof(char));
+                    fscanf(pf, "%s", m);
+                    free(nome_file);
+                }
+                fscanf(pf, "%s", msg);
+                fclose(pf);
+                sprintf(action,"%c",'1');
                 break;
                 
             case '?'://caso in cui non riconosco nessuno dei caratteri
@@ -98,26 +113,25 @@ int main(int argc, char **argv) {
     /*COMPONGO NOME CLIENT*/
     char *client_name = malloc(sizeof(char)*32);
     sprintf(client_name,"client%d",getpid());
-<<<<<<< HEAD
     if(show_all_messages){
         char *nome_file = malloc(256*sizeof(char));
         nome_file = "server_";
         strcat(nome_file, server_name);
         strcat(nome_file, ".txt");
-        FILE *pf;
         pf = fopen(nome_file, "r");
         if(pf == NULL){
             printf("file di input non trovato\n");
             exit(1);
         }
         int i = 0;
-        while(!eof(pf)){
+        while(!feof(pf)){
             char *m = malloc(100000*sizeof(char));
             fscanf(pf, "%s", m);
             printf("%d: %s\n",i++, m);
             free(nome_file);
         }
-    }else{s
+        fclose(pf);
+    }else{
         /*AVVIO CLIENT CON I PARAMETRI DATI*/
         run_client(server_name, client_name, key, file, msg, action, output);
     }
@@ -125,10 +139,5 @@ int main(int argc, char **argv) {
     free(output);
     free(client_name);
     free(msg);
-=======
-    
-    /*AVVIO CLIENT CON I PARAMETRI DATI*/
-    run_client(server_name, client_name, key, file, msg, action, output);
->>>>>>> 896029ac554a284c1e5d19f334282bc06efed7c5
     return 0;
 }

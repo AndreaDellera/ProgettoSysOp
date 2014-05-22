@@ -10,6 +10,7 @@ Anno accademico 2013/2014
 #include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "functions.h"
 
 const int NUMB = 26;
@@ -18,7 +19,7 @@ typedef int bool; //per usare bool
 #define true 1
 #define false 0
 
-void cript(char* msg, char* key){
+void cript(char* msg, char* key, char* server_name){
     int k = 0;//puntatore alla chiave
     int m = 0;//puntatore al messaggio
     int lKey = 0;
@@ -53,6 +54,20 @@ void cript(char* msg, char* key){
         }
         m++;
     }
+    char *nome_file = malloc(256*sizeof(char));
+    nome_file = "server_";
+    strcat(nome_file, server_name);
+    strcat(nome_file, ".txt");
+    FILE *pf;
+    pf = fopen(nome_file, "a+");
+    if(pf == NULL){
+        printf("file non trovato\n");
+        exit(1);
+    }
+    int i = 0;
+    fprintf(pf, "%s\n", msg);
+    fclose(pf);
+
 }
 
 void decript(char* msg, char* key){
@@ -153,6 +168,7 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
                 fscanf(pf, "%s", tmp_server_name);
         }
     }
+    
     free(tmp_server_name);
     free(tmp);
     
@@ -160,6 +176,7 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
         printf("server non presente\n");
         exit(1);
     }
+    fclose(pf);
     
     /*Controllo la validità dei parametri prima di scrivere ognuno nella fifo*/
     if(strlen(msg) > maxtext){
@@ -210,6 +227,7 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
     }else{
         printf("***Reply from server is: %s***\n",msg);
     }
+    fclose(out);
 
     /*CHIUSURA CANALE DI COMUNICAZIONE*/
     close(fifo_server);//chiude le fifo
@@ -251,7 +269,7 @@ void run_server(char* client_name, char* server_name, int maxtext, int minvalue,
     
     //viene eseguita la de/codifica del messaggio
     if(action == 0){
-        cript(msg, key);
+        cript(msg, key, server_name);
     }
     if(action == 1){
         decript(msg, key);
