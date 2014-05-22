@@ -23,11 +23,10 @@ int main(int argc, char **argv) {
     char *msg = NULL;
     char *action = malloc(sizeof(char)*2);//il carattere \0 va considerato; per quello *2
     char *output = NULL;
-    char *input = NULL;
     
     int k;
     
-    char *options = "n:k:f:m:edo:";
+    char *options = "n:k:fm:edo:";
     opterr = 0;
     
     while ((k = getopt (argc, argv, options)) != -1) {
@@ -42,7 +41,6 @@ int main(int argc, char **argv) {
                 
             case 'f'://flag per prendere il messaggio da un file
                 file = 1;//TODO: file da input
-                input = optarg;
                 break;
                 
             case 'm'://messaggio
@@ -73,11 +71,8 @@ int main(int argc, char **argv) {
     char *client_name = malloc(sizeof(char)*32);
     sprintf(client_name,"client%d",getpid());
     
-    printf("client name = %s\n", client_name);
-    printf("azione: %s\n", action);
-    
     /*AVVIO CLIENT CON I PARAMETRI DATI*/
-    run_client(server_name, client_name, key, input, msg, action, output);
+    run_client(server_name, client_name, key, file, msg, action, output);
 
     return 0;
 }
