@@ -3,7 +3,7 @@
 \usepackage[utf8]{inputenc}
 
 \begin{document}
-\author{Bortoli Gianluca - matricola 159993\\Dellera Andrea - matricola 158365}
+\author{Bortoli Gianluca - matricola n. 159993\\Dellera Andrea - matricola n. 158365}
 \title{Relazione Progetto 1 - Sistemi Operativi 2013/14}
 \maketitle
 \pagebreak
@@ -18,9 +18,11 @@ Abbiamo deciso di delegare a questo processo l'incombenza di prendere in input d
 \begin{enumerate}
 \item nome del server a cui collegarsi (-n)
 \item chiave da utilizzare per la de/codifica (-k)
-\item un flag nel caso in cui si voglia prendere input da file (-f; esclude il passaggio del messaggio direttamente dalla linea di comando)
+\item un flag nel caso in cui si voglia prendere l'input da file, il quale esclude il passaggio del messaggio direttamente dalla linea di comando (-f)
 \item due flag per indicare se voglio de/codificare (-d e -e rispettivamente)
 \item nome del file dove, eventualmente, scrivere l'output (-o)
+\item un flag per poter visualizzare i messaggi precedentemente codificati da un certo servet (-s)
+\item un indice numerico per richiedere la decodifica di un precedente messaggio (-i)
 \end{enumerate}
 Una volta eseguito il parsing dei parametri da linea di comando, generiamo un nome sempre diverso per ogni client che viene lasciato, in modo da non aver conflitti con i nomi delle FIFO su cui poi i processi vanno a leggere/scrivere.\\
 Per risolvere ciò, abbiamo deciso di concatenare al termine glient il \emph{pid} corrispondente (es: "client12345").\\
@@ -34,7 +36,7 @@ Alla fine, viene eliminata la FIFO relativa al server con quel nome specifico pe
 
 \section{Libreria "functions.h"}
 Abbiamo deciso di strutturare il codice creando una libreria \emph{functions.h} che contiene tutte le funzioni principali. Ciò ci permettere di non appesantire inutilmente i sorgenti del \emph{client} e del \emph{server} e li rende anche più leggibili.\\
-Le funzioni principali sono la \emph{cript} e la \emph{decript}, la \emph{run\_server} e la \emph{run\_client} di cui abbiamo accennato prima.
+Le funzioni principali sono la \emph{cript} e la \emph{decript}, la \emph{run\_server} e la \emph{run\_client} (di cui abbiamo accennato prima) ed infine le \emph{write}/\emph{read\_encoded\_message}.
 \subsection{cript e decript}
 Queste due funzioni si occupano, rispettivamente, di criptare e decriptare i messaggi inviati dal client al server secondo le specifiche del progetto.
 \subsection{run\_server}
@@ -42,6 +44,10 @@ Questo metodo si occupa di gestire l'intera parte del server. Apre le fifo neces
 La \emph{run\_server} gestisce a tutti gli effetti l'intera comunicazione dal lato del server, facendo, quando serve, gli opportuni controlli prima di aprire le FIFO e/o file di configurazione.
 \subsection{run\_client}
 Questo metodo si occupa, al contrario, di gestire tutta la parte delegata al client, a partire dall'apertura delle FIFO, fino alla scrittura nella fifo per inviare ad un determinato client ciò che ha richiesto, leggendo i parametri necessari dal file di configurazione creato all'avvio di ogni server.
+\subsection{write/read\_encoded\_message}
+Queste due funzioni sono state scritte per implementare la possibilità di per poter avere una cronologia dei messaggi che un dato server ha criptato, in seguito ad una richiesta di un client.\\
+Per farlo, abbiamo deciso che ogni volta che ad un server arriva una richiesta di codifica (ma non di decodifica), esso si crea un file univoco nel quale memorizza i messaggi in ordine di processamento.\\
+Ciò ci permetterà in un secondo momento di poterli andare a referenziare attaverso un indice e, in questo modo, sarà possibile per il client richiederne la decodifica (data una chiave) senza immettere nuovamente il messaggio. 
 
 \section{Il log dei server}
 Abbiamo deciso di tener traccia di tutti i server con i relativi parametri nel file \emph{lista\_server.txt}.\\ 

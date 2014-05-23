@@ -54,7 +54,7 @@ void cript(char* msg, char* key){
         }
         m++;
     }
-    /*SCRIVO I MESSAGGI CODIFICATI IN UN FILE PER STORARLI, come da specifica*/
+    /*SCRIVO I MESSAGGI CODIFICATI IN UN FILE PER STORARLI*/
 
     
 }
