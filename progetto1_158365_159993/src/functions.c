@@ -120,7 +120,7 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
     char *tmp = NULL;
     pf = fopen("lista_server.txt", "r");
     if (pf == NULL){
-        printf("lista server vuota\n");
+        printf("Empty server list\n");
         exit(1);
     }
 
@@ -162,20 +162,20 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
     free(tmp);
     
     if (pf == NULL){
-        printf("server non presente\n");
+        printf("Server not present\n");
         exit(1);
     }
     fclose(pf);
 
     /*Controllo la validità dei parametri prima di scrivere ognuno nella fifo*/
     if(strlen(msg) > maxtext){
-        printf("messaggio troppo lungo\n");
+        printf("Message too long\n");
         write(fifo_server,"parametri_invalidi",256*sizeof(char));
         exit(1);
     }
 
     if(strlen(key) > maxvalue || strlen(key) < minvalue){
-        printf("lunghezza chiave errata\n");
+        printf("Incorrect key length\n");
         write(fifo_server,"parametri_invalidi",256*sizeof(char));
         exit(1);
     }
@@ -190,7 +190,7 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
     /*CREO LA FIFO DEL CLIENT*/
     file_cl = create_fifo(client_name);
     if(file_cl < 0){
-        printf("impossibile creare fifo per il client %s\n", client_name);
+        printf("Unable to create a fifo for %s\n", client_name);
         exit(-1);
     }
 
@@ -208,7 +208,6 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
     }
 
     read(fifo_client, msg, maxtext);
-    printf("***Reply from server is: %s***\n",msg);
 
     FILE *out;
     if(strcmp(output,"do_nothing") != 0){
@@ -222,12 +221,13 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
     /*CHIUSURA CANALE DI COMUNICAZIONE*/
     //chiude le fifo
     if((close(fifo_server)) == -1)
-        printf("fifo server non chiusa\n");
+        printf("fifo server not closed\n");
     
     if((close(fifo_client)) == -1)
-        printf("fifo client non chiusa\n");
+        printf("fifo client not closed\n");
+
     if((unlink(client_name)) == -1)
-        printf("fifo client non eliminata\n");//elimina fifo client
+        printf("fifo client not deleted\n");//elimina fifo client
 }
 
 void run_server(char* client_name, char* server_name, int maxtext, int minvalue, int maxvalue, int index){
@@ -241,7 +241,7 @@ void run_server(char* client_name, char* server_name, int maxtext, int minvalue,
     /*COMUNICAZIONE TRA SERVER E CLIENT*/
     fifo_server = open(server_name, O_RDONLY);//apre fifo server in read per ricevere i parametri dal client
     if(fifo_server < 1){
-        printf("Errore apertura fifo_server\n");
+        printf("Error in opening fifo server\n");
         unlink(server_name);
         exit(1);
     }
@@ -265,10 +265,8 @@ void run_server(char* client_name, char* server_name, int maxtext, int minvalue,
     //viene eseguita la de/codifica del messaggio
     if(action == 0){
         cript(msg, key);
-        printf("end of crypt\n");
-        write_encoded_msg(server_name, index, msg);
-        printf("end of write_encoded_msg\n");
-        printf("\tmessaggio codificato!\n");
+        write_encoded_msg(server_name, msg);
+        printf("\tmessage encoded!\n");
     }
     if(action == 1){
         decript(msg, key);
@@ -277,7 +275,7 @@ void run_server(char* client_name, char* server_name, int maxtext, int minvalue,
     //scrittura le messaggio de/criptato al client per rispondergli
     fifo_client = open(client_name, O_WRONLY);
     if(fifo_client < 1) {
-        printf("Errore apertura fifo_client\n");
+        printf("Error in opening fifo client\n");
         exit(2);
     }
     
@@ -286,11 +284,14 @@ void run_server(char* client_name, char* server_name, int maxtext, int minvalue,
     printf("***Data sent back to client***\n");
 
     /*CHIUSURA CANALE DI COMUNICAZIONE*/
-    close(fifo_server);
-    close(fifo_client);
+    if((close(fifo_server)) == -1)
+        printf("fifo server not closed\n");
+    
+    if((close(fifo_client)) == -1)
+        printf("fifo client not closed\n");
 }
 
-void write_encoded_msg(char* server_name, int index, char* msg){
+void write_encoded_msg(char* server_name, char* msg){
     FILE *pf;
     char* name = malloc(256*sizeof(char));
     strcpy(name, server_name);
@@ -298,10 +299,10 @@ void write_encoded_msg(char* server_name, int index, char* msg){
     printf("\t\tnome file %s\n", name);
     pf = fopen(name, "a+");
     if(pf == NULL){
-        printf("file non trovato\n");
+        printf("File not found\n");
         exit(1);
     }
-    fprintf(pf, "%d: %s\n", index, msg);
+    fprintf(pf, "%s\n", msg);
     fclose(pf);
 }
 
@@ -313,7 +314,7 @@ char* read_encoded_msg(char* server_name, int index){
     strcat(nome_file, ".txt");
     pf = fopen(nome_file, "r");
     if(pf == NULL){
-        printf("file con cronologia dei messaggi non trovato\n");
+        printf("History file not found\n");
         exit(1);
     }
     int i = 0;
@@ -332,17 +333,17 @@ void show_all_messages(char* server_name){
     nome_file = "server_";
     strcat(nome_file, server_name);
     strcat(nome_file, ".txt");
-    pf = fopen(nome_file, "r");
+    pf = fopen(nome_file, O_RDONLY);
     if(pf == NULL){
-        printf("file di input non trovato\n");
+        printf("File not found\n");
         exit(1);
     }
     int i = 0;
-    while(feof(pf) == 0){
-        char *m = malloc(100000*sizeof(char));
+    char *m = malloc(100000*sizeof(char));
+    while(!feof(pf)){
         fscanf(pf, "%s", m);
         printf("%d: %s\n",i++, m);
-        free(nome_file);
     }
+    free(nome_file);
     fclose(pf);
 }

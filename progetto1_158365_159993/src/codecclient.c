@@ -87,7 +87,7 @@ int main(int argc, char **argv) {
                 break;
                 
             case '?'://caso in cui non riconosco nessuno dei caratteri
-                printf("c'è qualcosa che non va o_O\n");
+                printf("Parameter not foundn");
 
             default:
                 abort();

@@ -46,7 +46,7 @@ int main(int argc, char **argv) {
                 break;
                 
             case '?'://caso in cui non riconosco nessuno dei caratteri
-                printf("qualcosa non va\n");
+                printf("Parameter not found\n");
             default:
                 abort ();
         }
@@ -86,14 +86,14 @@ int main(int argc, char **argv) {
     /*CREO LA FIFO DEL SERVER E AVVIO SERVER CON I PARAMETRI DATI*/
     file = create_fifo(server_name); //creo una fifo con il nome passato con argomento -n
     if(file < 0) {//error handling
-        printf("impossibile creare una fifo per il server %s\n", server_name);
+        printf("Unable to create a fifo server %s\n", server_name);
         exit(-1);
     }
     char *client_name = malloc(256*sizeof(char));
     while(1){
         int fifo_server = open(server_name, O_RDONLY);//apre fifo server in read per ricevere i parametri dal client
         if(fifo_server < 1){
-            printf("Errore apertura fifo_server\n");
+            printf("Error in opening fifo server\n");
             unlink(server_name);
             exit(1);
         }
