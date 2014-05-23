@@ -19,8 +19,8 @@ all:
 	@echo "\n"
 bin: clean
 	mkdir bin
-	gcc -std=c99 -pedantic ./src/codecserver.c ./src/functions.c -o codecserver
-	gcc -std=c99 -pedantic ./src/codecclient.c ./src/functions.c -o codecclient
+	gcc ./src/codecserver.c ./src/functions.c -o codecserver
+	gcc ./src/codecclient.c ./src/functions.c -o codecclient
 	@echo "\tAll compiled succesfully !"
 	mv codecclient ./bin/
 	mv codecserver ./bin/

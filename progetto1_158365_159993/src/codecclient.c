@@ -76,7 +76,7 @@ int main(int argc, char **argv) {
                 output = optarg;
                 break;
             
-            case 's'://show all messages stored in the server
+            case 's'://show all messages stored in the server (ONLY chrypted ones!)
                 show_all_messages = 1;
                 break;
             
@@ -88,11 +88,11 @@ int main(int argc, char **argv) {
                 strcat(nome_file, ".txt");
                 pf = fopen(nome_file, "r");
                 if(pf == NULL){
-                    printf("file di input non trovato\n");
+                    printf("file con cronologia dei messaggi non trovato\n");
                     exit(1);
                 }
                 int i = 0;
-                while(i < index){
+                while(i < index-1){
                     char *m = malloc(100000*sizeof(char));
                     fscanf(pf, "%s", m);
                     free(nome_file);
