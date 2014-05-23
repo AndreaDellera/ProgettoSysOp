@@ -211,18 +211,23 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
     printf("***Reply from server is: %s***\n",msg);
 
     FILE *out;
-    if(output != NULL){
+    if(strcmp(output,"do_nothing") != 0){
         out = fopen(output, "a+");
         fprintf(out, "%s\n", msg);
     }else{
-        printf("***Reply from server is: %s***\n",msg);
+        printf("***Reply from server is: %s***\n", msg);
     }
     fclose(out);
 
     /*CHIUSURA CANALE DI COMUNICAZIONE*/
-    close(fifo_server);//chiude le fifo
-    close(fifo_client);
-    unlink(client_name);//elimina fifo client
+    //chiude le fifo
+    if((close(fifo_server)) == -1)
+        printf("fifo server non chiusa\n");
+    
+    if((close(fifo_client)) == -1)
+        printf("fifo client non chiusa\n");
+    if((unlink(client_name)) == -1)
+        printf("fifo client non eliminata\n");//elimina fifo client
 }
 
 void run_server(char* client_name, char* server_name, int maxtext, int minvalue, int maxvalue, int index){

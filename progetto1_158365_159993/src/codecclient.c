@@ -24,6 +24,7 @@ int main(int argc, char **argv) {
     char *msg = NULL;
     char *action = malloc(sizeof(char)*2);//il carattere \0 va considerato; per quello *2
     char *output = malloc(256*sizeof(char));
+    strcpy(output, "do_nothing");
     int show_all_messages_flag = 0;
     int index = -1;
     int k;
