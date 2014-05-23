@@ -295,7 +295,7 @@ void write_encoded_msg(char* server_name, char* msg){
     FILE *pf;
     char* name = malloc(256*sizeof(char));
     strcpy(name, server_name);
-    strcat(name, ".txt");
+    strcat(name, "_history.txt");
     printf("\t\tnome file %s\n", name);
     pf = fopen(name, "a+");
     if(pf == NULL){
@@ -307,11 +307,12 @@ void write_encoded_msg(char* server_name, char* msg){
     fclose(pf);
 }
 
+//funzione che decodifica un certo messaggio
 char* read_encoded_msg(char* server_name, int index){
     FILE *pf;
     char* name = malloc(256*sizeof(char));
     strcpy(name, server_name);
-    strcat(name, ".txt");
+    strcat(name, "_history.txt");
     pf = fopen(name, "r");
     if(pf == NULL){
         printf("History file not found\n");
@@ -319,7 +320,7 @@ char* read_encoded_msg(char* server_name, int index){
     }
     int i = 0;
     char *m = malloc(100000*sizeof(char));
-    while(i < index-1 && !feof(pf)){
+    while(i < index && !feof(pf)){
         fscanf(pf, "%s", m);
     }
     fscanf(pf, "%s", m);
@@ -328,21 +329,19 @@ char* read_encoded_msg(char* server_name, int index){
     return m;
 }
 
+//funzione che mostra tutti i messaggi codificati da un certo server
 void show_all_messages(char* server_name){
     int i = 0;
-    printf("inizio funzione\n");
     FILE *pf;
     char* name = malloc(256*sizeof(char));
-    printf("server_name: %s\n", server_name);
     strcpy(name, server_name);
-    strcat(name, ".txt");
+    strcat(name, "_history.txt");
     printf("nome composto: %s\n", name);
     pf = fopen(name, "r");
     if(pf == NULL){
         printf("File not found\n");
         exit(1);
     }
-    printf("File aperto in lettura\n");
     char *m = malloc(100000*sizeof(char));
     while(!feof(pf)){
         fscanf(pf, "%s", m);
