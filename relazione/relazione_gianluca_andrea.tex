@@ -55,5 +55,13 @@ Ciò ci permette una migliore e più semplice gestione dei parametri in input pe
 Nel caso in cui un utente, con molti server in esecuzione in background o come demoni ad esempio, voglia accedere ai loro servizi, ma non si ricorda semplicemente i nomi con cui accedervi, può semplicemente leggere il file di log.\\
 Questa scelta è stata dettata sia dalla comodità di avere un log dei server avviati, ma anche per permettere all'utente una visione d'insieme migliore.
 
+\section{Makefile}
+Oltre ai target richiesti, abbiamo deciso di aggiungerne alcuni per rendere il testing più approfondito e separare la creazione degli eseguibili dalla vera e propria installazione dei programmi \emph{codecclient} e \emph{codecserver}.
+\begin{enumerate}
+\item \textbf{install}: sposta gli eseguibili compilati precedentemente dal target \emph{bin} in /usr/bin/ in modo che siano utilizzabili come veri e propri comandi della shell
+\item \textbf{uninstall}: rimuove \emph{codecclient} e \emph{codecserver} da /usr/bin/
+\item \textbf{testAssets}: testa gli assets creati appositamente, prendendo i messaggi in input da file (il target test, scrive il messaggio da direttamente linea di comando)
+\end{enumerate} 
+
 
 \end{document}

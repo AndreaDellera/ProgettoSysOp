@@ -53,10 +53,7 @@ void cript(char* msg, char* key){
             k = (k + 1) % lKey;
         }
         m++;
-    }
-    /*SCRIVO I MESSAGGI CODIFICATI IN UN FILE PER STORARLI*/
-
-    
+    }    
 }
 
 void decript(char* msg, char* key){
