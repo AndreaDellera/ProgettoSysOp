@@ -171,13 +171,13 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
     if(strlen(msg) > maxtext){
         printf("Message too long\n");
         write(fifo_server,"parametri_invalidi",256*sizeof(char));
-        exit(1);
+        exit(-1);
     }
 
     if(strlen(key) > maxvalue || strlen(key) < minvalue){
         printf("Incorrect key length\n");
         write(fifo_server,"parametri_invalidi",256*sizeof(char));
-        exit(1);
+        exit(-1);
     }
 
     /*COMUNICAZIONE TRA SERVER E CLIENT*/
@@ -303,47 +303,51 @@ void write_encoded_msg(char* server_name, char* msg){
         exit(1);
     }
     fprintf(pf, "%s\n", msg);
+    free(name);
     fclose(pf);
 }
 
 char* read_encoded_msg(char* server_name, int index){
     FILE *pf;
-    char* nome_file = malloc(256*sizeof(char));
-    nome_file = "server_";
-    strcat(nome_file, server_name);
-    strcat(nome_file, ".txt");
-    pf = fopen(nome_file, "r");
+    char* name = malloc(256*sizeof(char));
+    strcpy(name, server_name);
+    strcat(name, ".txt");
+    pf = fopen(name, "r");
     if(pf == NULL){
         printf("History file not found\n");
         exit(1);
     }
     int i = 0;
     char *m = malloc(100000*sizeof(char));
-    while(i < index-1){
+    while(i < index-1 && !feof(pf)){
         fscanf(pf, "%s", m);
     }
     fscanf(pf, "%s", m);
+    free(name);
     fclose(pf);
     return m;
 }
 
 void show_all_messages(char* server_name){
+    int i = 0;
+    printf("inizio funzione\n");
     FILE *pf;
-    char *nome_file = malloc(256*sizeof(char));
-    nome_file = "server_";
-    strcat(nome_file, server_name);
-    strcat(nome_file, ".txt");
-    pf = fopen(nome_file, O_RDONLY);
+    char* name = malloc(256*sizeof(char));
+    printf("server_name: %s\n", server_name);
+    strcpy(name, server_name);
+    strcat(name, ".txt");
+    printf("nome composto: %s\n", name);
+    pf = fopen(name, "r");
     if(pf == NULL){
         printf("File not found\n");
         exit(1);
     }
-    int i = 0;
+    printf("File aperto in lettura\n");
     char *m = malloc(100000*sizeof(char));
     while(!feof(pf)){
         fscanf(pf, "%s", m);
         printf("%d: %s\n",i++, m);
     }
-    free(nome_file);
+    free(name);
     fclose(pf);
 }

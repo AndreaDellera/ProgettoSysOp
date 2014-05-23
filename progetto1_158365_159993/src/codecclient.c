@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
     while ((k = getopt (argc, argv, options)) != -1) {
         switch (k) {
             case 'n'://nome server a cui connettersi
-                server_name = optarg;
+                strcpy(server_name, optarg);
                 break;
                 
             case 'k'://chiave
@@ -87,7 +87,7 @@ int main(int argc, char **argv) {
                 break;
                 
             case '?'://caso in cui non riconosco nessuno dei caratteri
-                printf("Parameter not foundn");
+                printf("Parameter not found\n");
 
             default:
                 abort();
