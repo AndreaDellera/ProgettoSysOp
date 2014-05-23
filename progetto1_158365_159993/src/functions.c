@@ -19,7 +19,7 @@ typedef int bool; //per usare bool
 #define true 1
 #define false 0
 
-void cript(char* msg, char* key, char* server_name, int index){
+void cript(char* msg, char* key){
     int k = 0;//puntatore alla chiave
     int m = 0;//puntatore al messaggio
     int lKey = 0;
@@ -166,13 +166,14 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
         exit(1);
     }
     fclose(pf);
-    
+
     /*Controllo la validità dei parametri prima di scrivere ognuno nella fifo*/
     if(strlen(msg) > maxtext){
         printf("messaggio troppo lungo\n");
         write(fifo_server,"parametri_invalidi",256*sizeof(char));
         exit(1);
     }
+
     if(strlen(key) > maxvalue || strlen(key) < minvalue){
         printf("lunghezza chiave errata\n");
         write(fifo_server,"parametri_invalidi",256*sizeof(char));
@@ -259,7 +260,8 @@ void run_server(char* client_name, char* server_name, int maxtext, int minvalue,
     //viene eseguita la de/codifica del messaggio
     if(action == 0){
         cript(msg, key);
-        write_encoded_msg(server_name, index)
+        write_encoded_msg(server_name, index, msg);
+        printf("\tmessaggio codificato!\n");
     }
     if(action == 1){
         decript(msg, key);
@@ -281,9 +283,11 @@ void run_server(char* client_name, char* server_name, int maxtext, int minvalue,
     close(fifo_client);
 }
 
-void write_encoded_msg(char* server_name, int index){
+void write_encoded_msg(char* server_name, int index, char* msg){
     FILE *pf;
-    pf = fopen(strcat(server_name, ".txt"), "a+");
+    char* name = strcat(server_name, ".txt");
+    printf("\t\tnome file %s\n", name);
+    pf = fopen(name, "a+");
     if(pf == NULL){
         printf("file non trovato\n");
         exit(1);
@@ -293,6 +297,7 @@ void write_encoded_msg(char* server_name, int index){
 }
 
 char* read_encoded_msg(char* server_name, int index){
+    FILE *pf;
     char* nome_file = malloc(256*sizeof(char));
     nome_file = "server_";
     strcat(nome_file, server_name);
@@ -303,12 +308,32 @@ char* read_encoded_msg(char* server_name, int index){
         exit(1);
     }
     int i = 0;
+    char *m = malloc(100000*sizeof(char));
     while(i < index-1){
+        fscanf(pf, "%s", m);
+    }
+    fscanf(pf, "%s", m);
+    fclose(pf);
+    return m;
+}
+
+void show_all_messages(char* server_name){
+    FILE *pf;
+    char *nome_file = malloc(256*sizeof(char));
+    nome_file = "server_";
+    strcat(nome_file, server_name);
+    strcat(nome_file, ".txt");
+    pf = fopen(nome_file, "r");
+    if(pf == NULL){
+        printf("file di input non trovato\n");
+        exit(1);
+    }
+    int i = 0;
+    while(feof(pf) == 0){
         char *m = malloc(100000*sizeof(char));
         fscanf(pf, "%s", m);
-                //free(nome_file);
+        printf("%d: %s\n",i++, m);
+        free(nome_file);
     }
-    fscanf(pf, "%s", msg);
-    fclose(pf);}
-
+    fclose(pf);
 }

@@ -17,7 +17,6 @@ Anno accademico 2013/2014
 int main(int argc, char **argv) {    
     //##### Gestione input da linea di comando #############################
     char *server_name = NULL;
-    server_name = malloc(sizeof(char)*32);
     char *minvalue = NULL;
     char *maxvalue = NULL;
     char *maxtext = NULL;
@@ -61,9 +60,9 @@ int main(int argc, char **argv) {
         fprintf(fp,"%s ",server_name);
 
         if(maxtext != NULL){
-            fprintf(fp,"%s ",maxtext);
+            fprintf(fp, "%s ",maxtext);
         } else {
-            fprintf(fp,"?");
+            fprintf(fp, "? ");
             /*
             il carattere ? serve per denotare un parametro non presente in input 
             per poi poter leggere la lista dei server con i relativi parametri in modo corretto
@@ -73,16 +72,14 @@ int main(int argc, char **argv) {
         if(minvalue != NULL){
             fprintf(fp, "%s ", minvalue);
         } else {
-            fprintf(fp,"? ");
+            fprintf(fp, "? ");
         }
 
         if(maxvalue != NULL){
-            fprintf(fp, "%s ",maxvalue);
+            fprintf(fp, "%s\n",maxvalue);
         } else {
-            fprintf(fp,"? ");
+            fprintf(fp, "?\n");
         }
-        
-        fprintf(fp, "\n");
     }
     fclose(fp);
 
@@ -92,7 +89,7 @@ int main(int argc, char **argv) {
         printf("impossibile creare una fifo per il server %s\n", server_name);
         exit(-1);
     }
-
+    char *client_name = malloc(256*sizeof(char));
     while(1){
         int fifo_server = open(server_name, O_RDONLY);//apre fifo server in read per ricevere i parametri dal client
         if(fifo_server < 1){
@@ -101,19 +98,19 @@ int main(int argc, char **argv) {
             exit(1);
         }
         //legge dalla fifo_server il nome del client
-        char *client_name = malloc(256*sizeof(char));
+        
         read(fifo_server, client_name, 256*sizeof(char));
         
         if(client_name != NULL){
-            printf("client: %s\n", client_name);
             run_server(client_name, server_name, atoi(maxtext), atoi(minvalue), atoi(maxvalue), index++);
+            /*client_name = "";
             read(fifo_server, client_name, 256*sizeof(char));
-            printf("\n\tSeconda Read: %s", client_name);
+            printf("\n\tSeconda Read: %s", client_name);*/
         }
-        free(client_name);
+        
         close(fifo_server);
     }
-    
+    free(client_name);
     unlink(server_name);
 
     return 0;

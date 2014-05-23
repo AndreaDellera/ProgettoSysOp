@@ -18,13 +18,13 @@ Anno accademico 2013/2014
 
 int main(int argc, char **argv) {    
     //##### Gestione input da linea di comando #############################
-    char *server_name = NULL;
+    char *server_name = malloc(256*sizeof(char));
     char *key = NULL;
     int file = 0;
     char *msg = NULL;
     char *action = malloc(sizeof(char)*2);//il carattere \0 va considerato; per quello *2
     char *output = malloc(256*sizeof(char));
-    int show_all_messages = 0;
+    int show_all_messages_flag = 0;
     int index = -1;
     int k;
     FILE *pf;
@@ -77,7 +77,7 @@ int main(int argc, char **argv) {
                 break;
             
             case 's'://show all messages stored in the server (ONLY chrypted ones!)
-                show_all_messages = 1;
+                show_all_messages_flag = 1;
                 break;
             
             case 'i': //decode the i-esimo message
@@ -98,28 +98,13 @@ int main(int argc, char **argv) {
     sprintf(client_name,"client%d",getpid());
 
     //i-esimo messaggio
-    if(i != -1){
+    printf("indice da ricercare: %d\n", index);
+    if(index != -1){
         msg = read_encoded_msg(server_name, index);
     }
     
-    if(show_all_messages){
-        char *nome_file = malloc(256*sizeof(char));
-        nome_file = "server_";
-        strcat(nome_file, server_name);
-        strcat(nome_file, ".txt");
-        pf = fopen(nome_file, "r");
-        if(pf == NULL){
-            printf("file di input non trovato\n");
-            exit(1);
-        }
-        int i = 0;
-        while(!feof(pf)){
-            char *m = malloc(100000*sizeof(char));
-            fscanf(pf, "%s", m);
-            printf("%d: %s\n",i++, m);
-            free(nome_file);
-        }
-        fclose(pf);
+    if(show_all_messages_flag){
+        show_all_messages(server_name);
     }else{
         /*AVVIO CLIENT CON I PARAMETRI DATI*/
         run_client(server_name, client_name, key, file, msg, action, output);
