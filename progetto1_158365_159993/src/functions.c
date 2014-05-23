@@ -19,7 +19,7 @@ typedef int bool; //per usare bool
 #define true 1
 #define false 0
 
-void cript(char* msg, char* key, char* server_name){
+void cript(char* msg, char* key, char* server_name, int index){
     int k = 0;//puntatore alla chiave
     int m = 0;//puntatore al messaggio
     int lKey = 0;
@@ -55,19 +55,8 @@ void cript(char* msg, char* key, char* server_name){
         m++;
     }
     /*SCRIVO I MESSAGGI CODIFICATI IN UN FILE PER STORARLI, come da specifica*/
-    /*char *nome_file = malloc(256*sizeof(char));
-    nome_file = "server_";
-    strcat(nome_file, server_name);
-    strcat(nome_file, ".txt");
+
     
-    FILE *pf;
-    pf = fopen(nome_file, "a+");
-    if(pf == NULL){
-        printf("file non trovato\n");
-        exit(1);
-    }
-    fprintf(pf, "%s\n", msg);
-    fclose(pf);*/
 }
 
 void decript(char* msg, char* key){
@@ -235,7 +224,7 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
     unlink(client_name);//elimina fifo client
 }
 
-void run_server(char* client_name, char* server_name, int maxtext, int minvalue, int maxvalue){
+void run_server(char* client_name, char* server_name, int maxtext, int minvalue, int maxvalue, int index){
     int fifo_server, fifo_client;
     char *nvalue = NULL;
     char *buf = NULL;
@@ -269,7 +258,8 @@ void run_server(char* client_name, char* server_name, int maxtext, int minvalue,
     
     //viene eseguita la de/codifica del messaggio
     if(action == 0){
-        cript(msg, key, server_name);
+        cript(msg, key);
+        write_encoded_msg(server_name, index)
     }
     if(action == 1){
         decript(msg, key);
@@ -289,4 +279,36 @@ void run_server(char* client_name, char* server_name, int maxtext, int minvalue,
     /*CHIUSURA CANALE DI COMUNICAZIONE*/
     close(fifo_server);
     close(fifo_client);
+}
+
+void write_encoded_msg(char* server_name, int index){
+    FILE *pf;
+    pf = fopen(strcat(server_name, ".txt"), "a+");
+    if(pf == NULL){
+        printf("file non trovato\n");
+        exit(1);
+    }
+    fprintf(pf, "%d: %s\n", index, msg);
+    fclose(pf);
+}
+
+char* read_encoded_msg(char* server_name, int index){
+    char* nome_file = malloc(256*sizeof(char));
+    nome_file = "server_";
+    strcat(nome_file, server_name);
+    strcat(nome_file, ".txt");
+    pf = fopen(nome_file, "r");
+    if(pf == NULL){
+        printf("file con cronologia dei messaggi non trovato\n");
+        exit(1);
+    }
+    int i = 0;
+    while(i < index-1){
+        char *m = malloc(100000*sizeof(char));
+        fscanf(pf, "%s", m);
+                //free(nome_file);
+    }
+    fscanf(pf, "%s", msg);
+    fclose(pf);}
+
 }

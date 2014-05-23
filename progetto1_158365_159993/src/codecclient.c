@@ -82,23 +82,6 @@ int main(int argc, char **argv) {
             
             case 'i': //decode the i-esimo message
                 index = atoi(optarg);
-                nome_file = malloc(256*sizeof(char));
-                nome_file = "server_";
-                strcat(nome_file, server_name);
-                strcat(nome_file, ".txt");
-                pf = fopen(nome_file, "r");
-                if(pf == NULL){
-                    printf("file con cronologia dei messaggi non trovato\n");
-                    exit(1);
-                }
-                int i = 0;
-                while(i < index-1){
-                    char *m = malloc(100000*sizeof(char));
-                    fscanf(pf, "%s", m);
-                    //free(nome_file);
-                }
-                fscanf(pf, "%s", msg);
-                fclose(pf);
                 sprintf(action,"%c",'1');
                 break;
                 
@@ -113,6 +96,12 @@ int main(int argc, char **argv) {
     /*COMPONGO NOME CLIENT*/
     char *client_name = malloc(sizeof(char)*32);
     sprintf(client_name,"client%d",getpid());
+
+    //i-esimo messaggio
+    if(i != -1){
+        msg = read_encoded_msg(server_name, index);
+    }
+    
     if(show_all_messages){
         char *nome_file = malloc(256*sizeof(char));
         nome_file = "server_";

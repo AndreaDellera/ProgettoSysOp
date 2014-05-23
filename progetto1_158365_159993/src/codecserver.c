@@ -17,11 +17,13 @@ Anno accademico 2013/2014
 int main(int argc, char **argv) {    
     //##### Gestione input da linea di comando #############################
     char *server_name = NULL;
+    server_name = malloc(sizeof(char)*32);
     char *minvalue = NULL;
     char *maxvalue = NULL;
     char *maxtext = NULL;
     int k;
     int file;//file per fifo server
+    int index = 0;
     
     char *options = "n:t:m:M:"; // i ":" indicano che il parametro ha un argomento
     opterr = 0;
@@ -104,8 +106,9 @@ int main(int argc, char **argv) {
         
         if(client_name != NULL){
             printf("client: %s\n", client_name);
-            run_server(client_name, server_name, atoi(maxtext), atoi(minvalue), atoi(maxvalue));
+            run_server(client_name, server_name, atoi(maxtext), atoi(minvalue), atoi(maxvalue), index++);
             read(fifo_server, client_name, 256*sizeof(char));
+            printf("\n\tSeconda Read: %s", client_name);
         }
         free(client_name);
         close(fifo_server);
