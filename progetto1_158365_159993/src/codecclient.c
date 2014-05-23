@@ -98,7 +98,6 @@ int main(int argc, char **argv) {
     sprintf(client_name,"client%d",getpid());
 
     //i-esimo messaggio
-    printf("indice da ricercare: %d\n", index);
     if(index != -1){
         msg = read_encoded_msg(server_name, index);
     }
@@ -108,6 +107,7 @@ int main(int argc, char **argv) {
     }else{
         /*AVVIO CLIENT CON I PARAMETRI DATI*/
         run_client(server_name, client_name, key, file, msg, action, output);
+        unlink(client_name);
     }
     free(action);
     free(client_name);

@@ -103,9 +103,7 @@ int main(int argc, char **argv) {
         
         if(client_name != NULL){
             run_server(client_name, server_name, atoi(maxtext), atoi(minvalue), atoi(maxvalue), index++);
-            /*client_name = "";
             read(fifo_server, client_name, 256*sizeof(char));
-            printf("\n\tSeconda Read: %s", client_name);*/
         }
         
         close(fifo_server);

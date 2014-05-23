@@ -23,7 +23,7 @@ void run_server(char* client_name, char* server_name, int maxtext, int minvalue,
 
 
 void show_all_messages(char* server_name);
-void write_encoded_msg(char* server_name, int index); //scrive i messaggi codificati su file
+void write_encoded_msg(char* server_name, int index, char* msg); //scrive i messaggi codificati su file
 char* read_encoded_msg(char* server_name, int index); //prende dal file dei messaggi cosificati il messaggio in posizione index e lo decodifica
 
 #endif

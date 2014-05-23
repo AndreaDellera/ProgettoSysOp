@@ -260,7 +260,9 @@ void run_server(char* client_name, char* server_name, int maxtext, int minvalue,
     //viene eseguita la de/codifica del messaggio
     if(action == 0){
         cript(msg, key);
+        printf("end of crypt\n");
         write_encoded_msg(server_name, index, msg);
+        printf("end of write_encoded_msg\n");
         printf("\tmessaggio codificato!\n");
     }
     if(action == 1){
@@ -285,7 +287,9 @@ void run_server(char* client_name, char* server_name, int maxtext, int minvalue,
 
 void write_encoded_msg(char* server_name, int index, char* msg){
     FILE *pf;
-    char* name = strcat(server_name, ".txt");
+    char* name = malloc(256*sizeof(char));
+    strcpy(name, server_name);
+    strcat(name, ".txt");
     printf("\t\tnome file %s\n", name);
     pf = fopen(name, "a+");
     if(pf == NULL){
