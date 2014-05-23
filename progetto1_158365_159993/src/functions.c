@@ -54,7 +54,7 @@ void cript(char* msg, char* key, char* server_name, int index){
         }
         m++;
     }
-    /*SCRIVO I MESSAGGI CODIFICATI IN UN FILE PER STORARLI, come da specifica*/
+    /*SCRIVO I MESSAGGI CODIFICATI IN UN FILE PER STORARLI*/
 
     
 }
@@ -306,9 +306,7 @@ char* read_encoded_msg(char* server_name, int index){
     while(i < index-1){
         char *m = malloc(100000*sizeof(char));
         fscanf(pf, "%s", m);
-                //free(nome_file);
     }
     fscanf(pf, "%s", msg);
     fclose(pf);}
-
 }
