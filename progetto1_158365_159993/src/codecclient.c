@@ -95,7 +95,7 @@ int main(int argc, char **argv) {
                 while(i < index-1){
                     char *m = malloc(100000*sizeof(char));
                     fscanf(pf, "%s", m);
-                    free(nome_file);
+                    //free(nome_file);
                 }
                 fscanf(pf, "%s", msg);
                 fclose(pf);
@@ -136,8 +136,6 @@ int main(int argc, char **argv) {
         run_client(server_name, client_name, key, file, msg, action, output);
     }
     free(action);
-    free(output);
     free(client_name);
-    free(msg);
     return 0;
 }

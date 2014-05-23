@@ -54,8 +54,9 @@ void cript(char* msg, char* key, char* server_name){
         }
         m++;
     }
+
     /*SCRIVO I MESSAGGI CODIFICATI IN UN FILE PER STORARLI, come da specifica*/
-    char *nome_file = malloc(256*sizeof(char));
+    /*char *nome_file = malloc(256*sizeof(char));
     nome_file = "server_";
     strcat(nome_file, server_name);
     strcat(nome_file, ".txt");
@@ -65,9 +66,8 @@ void cript(char* msg, char* key, char* server_name){
         printf("file non trovato\n");
         exit(1);
     }
-    int i = 0;
     fprintf(pf, "%s\n", msg);
-    fclose(pf);
+    fclose(pf);*/
 }
 
 void decript(char* msg, char* key){
