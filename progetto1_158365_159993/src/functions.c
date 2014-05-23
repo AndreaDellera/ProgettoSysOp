@@ -304,7 +304,6 @@ void write_encoded_msg(char* server_name, char* msg){
     fclose(pf);
 }
 
-//funzione che decodifica un certo messaggio
 char* read_encoded_msg(char* server_name, int index){
     FILE *pf;
     char* name = malloc(256*sizeof(char));
@@ -326,7 +325,6 @@ char* read_encoded_msg(char* server_name, int index){
     return m;
 }
 
-//funzione che mostra tutti i messaggi codificati da un certo server
 void show_all_messages(char* server_name){
     int i = 0;
     FILE *pf;

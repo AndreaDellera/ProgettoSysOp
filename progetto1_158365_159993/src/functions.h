@@ -22,8 +22,8 @@ void run_client(char* server_name, char* client_name, char* key, int file, char*
 void run_server(char* client_name, char* server_name, int maxtext, int minvalue, int maxvalue, int index);
 
 
-void show_all_messages(char* server_name);
+void show_all_messages(char* server_name); //stampa a video tutti i messaggi processati fin'ora dal server
 void write_encoded_msg(char* server_name, char* msg); //scrive i messaggi codificati su file
-char* read_encoded_msg(char* server_name, int index); //prende dal file dei messaggi cosificati il messaggio in posizione index e lo decodifica
+char* read_encoded_msg(char* server_name, int index); //prende dal file dei messaggi cosificati il messaggio in posizione index e lo processa
 
 #endif
