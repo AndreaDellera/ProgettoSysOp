@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.5.25)  25 MAY 2014 22:54
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.5.25)  25 MAY 2014 22:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -275,7 +275,7 @@ Now handling font encoding U ...
 LaTeX Warning: Unused global option(s):
     [9pt].
 
-No file relazione_gianluca_andrea.aux.
+(./relazione_gianluca_andrea.aux)
 \openout1 = `relazione_gianluca_andrea.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 7.
@@ -298,25 +298,25 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 11.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 11.
-[1
+ [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3] [4]
-(./relazione_gianluca_andrea.aux) ) 
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3] [4] (./relazione_g
+ianluca_andrea.aux) ) 
 Here is how much of TeX's memory you used:
- 1476 strings out of 494976
- 16030 string characters out of 6180006
+ 1478 strings out of 494976
+ 16090 string characters out of 6180006
  74756 words of memory out of 5000000
  4726 multiletter control sequences out of 15000+600000
  12452 words of font info for 31 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  29i,6n,23p,814b,201s stack positions out of 5000i,500n,10000p,200000b,80000s
- </home/gian/.texmf-var/fonts/pk/ljfour/jkna
-ppen/ec/ecbx1200.600pk> </home/gian/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx
-1000.600pk> </home/gian/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1000.600pk> 
-</home/gian/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> </home/gian/
-.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1000.600pk> </home/gian/.texmf-var/f
-onts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/gian/.texmf-var/fonts/pk/ljfo
-ur/jknappen/ec/ecrm1728.600pk>
+ </home/gian/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx12
+00.600pk> </home/gian/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1000.600pk> </
+home/gian/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1000.600pk> </home/gian/.t
+exmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> </home/gian/.texmf-var/fon
+ts/pk/ljfour/jknappen/ec/ecrm1000.600pk> </home/gian/.texmf-var/fonts/pk/ljfour
+/jknappen/ec/ecrm1200.600pk> </home/gian/.texmf-var/fonts/pk/ljfour/jknappen/ec
+/ecrm1728.600pk>
 Output written on relazione_gianluca_andrea.pdf (4 pages, 70850 bytes).
 PDF statistics:
  256 PDF objects out of 1000 (max. 8388607)
