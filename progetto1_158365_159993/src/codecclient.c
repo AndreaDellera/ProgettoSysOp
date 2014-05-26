@@ -107,6 +107,7 @@ int main(int argc, char **argv) {
         show_all_messages(server_name);
     }else{
         /*AVVIO CLIENT CON I PARAMETRI DATI*/
+        printf("messaggio da codificare: %s\n", msg);
         run_client(server_name, client_name, key, file, msg, action, output);
         unlink(client_name);
     }

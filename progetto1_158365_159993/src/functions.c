@@ -264,6 +264,7 @@ void run_server(char* client_name, char* server_name, int maxtext, int minvalue,
     
     //viene eseguita la de/codifica del messaggio
     if(action == 0){
+        printf("messaggio da codificare: %s\n", msg);
         cript(msg, key);
         write_encoded_msg(server_name, msg);
         printf("\tmessage encoded!\n");

@@ -19,27 +19,27 @@ all:
 	@echo "\n"
 bin: clean
 	mkdir bin
-	gcc ./src/codecserver.c ./src/functions.c -o codecserver
-	gcc ./src/codecclient.c ./src/functions.c -o codecclient
+	gcc ./src/codecserver.c ./src/functions.c -o server
+	gcc ./src/codecclient.c ./src/functions.c -o client
 	@echo "\tAll compiled succesfully !"
-	mv codecclient ./bin/
-	mv codecserver ./bin/
+	mv client ./bin/
+	mv server ./bin/
 	@echo "\tFiles copied succesfully in /bin/ !"
 	@echo "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"
 	@echo "\n"
 
 install: clear bin
 	#NB: need root access
-	cp codecserver /usr/bin/
-	cp codecclient /usr/bin/
+	cp server /usr/bin/
+	cp client /usr/bin/
 	@echo "\tFiles copied succesfully in /usr/bin/ !"
 	@echo "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"
 	@echo "\n"
 
 uninstall:	
 	#NB: need root access
-	rm -rf /usr/bin/codecserver
-	rm -rf /usr/bin/codecclient
+	rm -rf /usr/bin/server
+	rm -rf /usr/bin/client
 	@echo "\tPrograms uninstalled succesfully !"
 	@echo "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"
 	@echo "\n"
@@ -55,16 +55,16 @@ assets: clean bin
 	@echo "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"
 
 testAssets: assets 
-	cd bin && ./codecserver -n testServer -m 1 -M 15 -t 100 &
-	cd bin && ./codecclient -n testServer -k ciao -f assets1.txt -e -o assets1_encoded.txt
-	cd bin && ./codecclient -n testServer -k ciao -f assets2.txt -e -o assets2_encoded.txt
+	cd bin && ./server -n testServer -m 1 -M 15 -t 100 &
+	cd bin && ./client -n testServer -k ciao -f assets1.txt -e -o assets1_encoded.txt
+	cd bin && ./client -n testServer -k ciao -f assets2.txt -e -o assets2_encoded.txt
 	cd bin && cat assets1_encoded.txt
 	cd bin && cat assets2_encoded.txt
 	@echo "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"
 
 test: bin
-	cd bin && ./codecserver -n testServer -m 1 -M 15 -t 100 &
-	cd bin && ./codecclient -n testServer -k ciao -m TestoDelMessaggio -e -o text_encoded.txt
+	cd bin && ./server -n testServer -m 1 -M 15 -t 100 &
+	cd bin && ./client -n testServer -k ciao -m TestoDelMessaggio -e -o text_encoded.txt
 	cd bin && cat text_encoded.txt
 	@echo "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"
 
