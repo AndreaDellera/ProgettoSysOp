@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.5.22)  23 MAY 2014 18:53
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.5.25)  25 MAY 2014 22:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **relazione_gianluca_andrea.tex
 (./relazione_gianluca_andrea.tex
 LaTeX2e <2011/06/27>
-Babel <3.9f> and hyphenation patterns for 2 languages loaded.
+Babel <3.9h> and hyphenation patterns for 5 languages loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo
@@ -22,6 +22,30 @@ File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 \abovecaptionskip=\skip41
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
+)
+(/usr/share/texlive/texmf-dist/tex/generic/babel/babel.sty
+Package: babel 2013/12/03 3.9h The Babel package
+
+(/usr/share/texlive/texmf-dist/tex/generic/babel-italian/italian.ldf
+Language: italian 2013/11/22 v1.3f Italian support from the babel system
+
+(/usr/share/texlive/texmf-dist/tex/generic/babel/babel.def
+File: babel.def 2013/12/03 3.9h Babel common definitions
+\babel@savecnt=\count87
+\U@D=\dimen103
+)
+\it@lettering=\count88
+Package babel Info: Making " an active character on input line 98.
+\Virgola=\count89
+))
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2011/01/03 v2.1 e-TeX tools for LaTeX
+
+(/usr/share/texlive/texmf-dist/tex/latex/etex-pkg/etex.sty
+Package: etex 1998/03/26 v2.0 eTeX basic definition package (PEB)
+\et@xins=\count90
+)
+\etb@tempcnta=\count91
 )
 (/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
 Package: fontenc 2005/09/27 v1.99g Standard LaTeX package
@@ -254,45 +278,49 @@ LaTeX Warning: Unused global option(s):
 (./relazione_gianluca_andrea.aux)
 \openout1 = `relazione_gianluca_andrea.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 7.
+LaTeX Font Info:    ... okay on input line 7.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 7.
+LaTeX Font Info:    ... okay on input line 7.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 7.
+LaTeX Font Info:    ... okay on input line 7.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 7.
+LaTeX Font Info:    ... okay on input line 7.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 7.
+LaTeX Font Info:    ... okay on input line 7.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 7.
+LaTeX Font Info:    ... okay on input line 7.
+LaTeX Info: Redefining \it@ocap on input line 7.
+LaTeX Info: Redefining \it@ccap on input line 7.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 8.
+(Font)              <12> on input line 11.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 8.
+(Font)              <8> on input line 11.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 8.
+(Font)              <6> on input line 11.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3] [4] (./relazione_g
 ianluca_andrea.aux) ) 
 Here is how much of TeX's memory you used:
- 651 strings out of 495031
- 6111 string characters out of 6181531
- 54215 words of memory out of 5000000
- 3908 multiletter control sequences out of 15000+600000
- 11676 words of font info for 30 fonts, out of 8000000 for 9000
- 14 hyphenation exceptions out of 8191
- 23i,6n,18p,517b,199s stack positions out of 5000i,500n,10000p,200000b,80000s
- </tmp/texfonts/pk/ljfour/jknappen/ec/ecbx1200.600pk> </tm
-p/texfonts/pk/ljfour/jknappen/ec/ecti1000.600pk> </tmp/texfonts/pk/ljfour/jknap
-pen/ec/ecbx1440.600pk> </tmp/texfonts/pk/ljfour/jknappen/ec/ecrm1000.600pk> </t
-mp/texfonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </tmp/texfonts/pk/ljfour/jkna
-ppen/ec/ecrm1728.600pk>
-Output written on relazione_gianluca_andrea.pdf (4 pages, 64493 bytes).
+ 1478 strings out of 494976
+ 16090 string characters out of 6180006
+ 74756 words of memory out of 5000000
+ 4726 multiletter control sequences out of 15000+600000
+ 12452 words of font info for 31 fonts, out of 8000000 for 9000
+ 36 hyphenation exceptions out of 8191
+ 29i,6n,23p,814b,201s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </home/gian/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx12
+00.600pk> </home/gian/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1000.600pk> </
+home/gian/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1000.600pk> </home/gian/.t
+exmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> </home/gian/.texmf-var/fon
+ts/pk/ljfour/jknappen/ec/ecrm1000.600pk> </home/gian/.texmf-var/fonts/pk/ljfour
+/jknappen/ec/ecrm1200.600pk> </home/gian/.texmf-var/fonts/pk/ljfour/jknappen/ec
+/ecrm1728.600pk>
+Output written on relazione_gianluca_andrea.pdf (4 pages, 70850 bytes).
 PDF statistics:
- 234 PDF objects out of 1000 (max. 8388607)
- 34 compressed objects within 1 object stream
+ 256 PDF objects out of 1000 (max. 8388607)
+ 38 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
