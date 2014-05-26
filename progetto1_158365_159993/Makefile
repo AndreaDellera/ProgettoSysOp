@@ -64,7 +64,7 @@ testAssets: assets
 
 test: bin
 	cd bin && ./server -n testServer -m 1 -M 15 -t 100 &
-	cd bin && ./client -n testServer -k ciao -m TestoDelMessaggio -e -o text_encoded.txt
+	cd bin && ./client -n testServer -k ciao -m "Testo Del Messaggio" -e -o text_encoded.txt
 	cd bin && cat text_encoded.txt
 	@echo "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"
 
