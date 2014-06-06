@@ -12,7 +12,7 @@ all:
 	@echo "\t- \033[1mbin\033[0m: genera i binari compilati eseguibili dentro “bin” che contiene i soli file oggetto eseguibili" #il \033[1m "some_text" \033[0m mette in bold il testo
 	@echo "\t- \033[1minstall\033[0m: installa gli eseguibili spostandoli in /usr/bin (NB: NECESSITA DI PERMESSI DI ROOT!)"
 	@echo "\t- \033[1muninstall\033[0m: elimina gli eseguibili da /usr/bin (NB: NECESSITA DI PERMESSI DI ROOT!)"
-	@echo "\t- \033[1massets\033[0m: genera dei possibili file di input (di prova) dentro “assets”"
+	@echo "\t- \033[1massets\033[0m: genera dei possibili file di input (di prova) dentro /assets/"
 	@echo "\t- \033[1mtest\033[0m: genera i binari e lancia gli eseguibili per una prova generica del servizio"
 	@echo "\t- \033[1mclean\033[0m: elimina eventuali file temporanei, compresi binari e assets generati"
 	@echo "\t- \033[1mtestAssets\033[0m: questo target permette di testare il programma con degli input di prova generati dal target assets"
@@ -27,10 +27,10 @@ bin: clean
 	@echo "\tFiles copied succesfully in /bin/ !"
 	@echo "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"
 
-install: clear bin
+install: clean bin
 	@#NB: need root access
-	@cp server /usr/bin/
-	@cp client /usr/bin/
+	@cp ./bin/server /usr/bin/
+	@cp ./bin/client /usr/bin/
 	@echo "\tFiles copied succesfully in /usr/bin/ !"
 	@echo "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"
 

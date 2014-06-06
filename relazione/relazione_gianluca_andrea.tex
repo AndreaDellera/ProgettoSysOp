@@ -64,7 +64,9 @@ Oltre ai target richiesti, abbiamo deciso di aggiungerne altri per rendere il te
 \begin{enumerate}
 \item \textbf{install}: sposta gli eseguibili compilati precedentemente dal target \emph{bin} nella cartella /usr/bin/, in modo che siano utilizzabili come comandi della shell
 \item \textbf{uninstall}: rimuove \emph{codecclient} e \emph{codecserver} dalla cartella /usr/bin/
-\item \textbf{testAssets}: testa gli assets creati appositamente, prendendo i messaggi in input da file (il target \emph{test}, scrive il messaggio direttamente da linea di comando)
+\item \textbf{test}: genera i binari e lancia gli eseguibili per una prova generica del servizio, con il testo del messaggio passato da linea di comando
+\item \textbf{assets}: genera dei possibili file di input (di prova) dentro la cartella /assets/
+\item \textbf{testAssets}: testa gli assets creati appositamente dal target precedente, prendendo i messaggi in input da file 
 \end{enumerate} 
 
 \end{document}
